@@ -1,0 +1,6 @@
+{
+    "$schema": "./node_modules/wrangler/config-schema.json",
+    "name": "strengthsync-chat",
+    "compatibility_date": "2026-07-11",
+    "main": "./src/worker/index.ts"
+  }
