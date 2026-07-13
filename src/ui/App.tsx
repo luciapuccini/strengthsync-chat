@@ -1,7 +1,7 @@
 import { useAgent } from "agents/react";
 import { useAgentChat } from "@cloudflare/ai-chat/react";
-import Placeholder from "./ui/Placeholder/Placeholder";
-import ChatPanel from "./ui/ChatPanel/ChatPanel";
+import Placeholder from "./Placeholder/Placeholder";
+import ChatPanel from "./ChatPanel/ChatPanel";
 import "./App.css";
 
 // WIP: One agent instance per page load.
