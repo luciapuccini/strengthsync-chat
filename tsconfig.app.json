@@ -23,5 +23,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
-  "exclude": ["src/worker.ts", "src/agent.ts", "src/tools.ts", "src/rag/**"]
+  "exclude": ["src/worker/**", "src/agent/**"]
 }
