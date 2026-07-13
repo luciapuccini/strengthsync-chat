@@ -1,77 +1,21 @@
-# React + TypeScript + Vite
+# StrengthSync Chat
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An AI-powered chat application that helps people understand and manage their gym/fitness routines. A dashboard shows the user's plan, exercises, and progress, while an AI chatbot acts as an interactive tool to understand and analyze those results.
 
-Currently, two official plugins are available:
+## Project scope
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Dashboard** — displays the user's fitness plan, exercises, and progress over time.
+- **Chatbot** — a conversational interface for interpreting the plan and progress data, answering questions, and reasoning about results with the user.
 
-## React Compiler
+## Tech stack
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- **Frontend** — React + TypeScript, built and served by Vite. [src/ui/App.tsx](src/ui/App.tsx).
+- **Backend** — Cloudflare Workers. The Worker entry point ([src/worker/index.ts](src/worker/index.ts)) routes requests to a Durable Object agent.
+- **Agent** — `StrengthSyncAgent`, an `AIChatAgent` Durable Object ([src/worker/agent/agent.ts](src/worker/agent/agent.ts)) that streams chat responses using the OpenAI API via the `ai` SDK and `@ai-sdk/openai`.
+- **Deployment** — Cloudflare Workers platform, configured via `wrangler.jsonc`.
 
-Note: This will impact Vite dev & build performances.
+## Structure
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+- `src/ui/` — frontend app and components.
+- `src/worker/` — all Worker-side code, deployed as the Cloudflare Worker.
+  - `src/worker/agent/*` — the Durable Object agent. All config and abilities under this folder.
