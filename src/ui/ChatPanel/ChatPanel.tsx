@@ -1,22 +1,22 @@
 import { useState } from "react";
-import type { UIMessage } from "ai";
+import { useAgent } from "agents/react";
+import { useAgentChat } from "@cloudflare/ai-chat/react";
 import MessageList from "./chat/MessageList";
 import "./chat/chat.css";
 
-interface ChatPanelProps {
-  messages: UIMessage[];
-  sendMessage: (message: {
-    role: "user";
-    parts: { type: "text"; text: string }[];
-  }) => void;
-  status: string;
-}
+// WIP: One agent instance per page load.
+const sessionId = crypto.randomUUID();
 
-export default function ChatPanel({
-  messages,
-  sendMessage,
-  status,
-}: ChatPanelProps) {
+export default function ChatPanel() {
+  const agent = useAgent({ agent: "strength-sync-agent", name: sessionId });
+  // Worker streams to FE
+  const { messages, sendMessage, status } = useAgentChat({
+    agent,
+    onToolCall: async ({ toolCall, addToolOutput }) => {
+      console.log("🚀 ~ toolCall, addToolOutput :", toolCall, addToolOutput);
+    },
+  });
+
   const [input, setInput] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {

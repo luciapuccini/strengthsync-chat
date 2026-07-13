@@ -38,37 +38,6 @@
   padding: 0 24px;
 }
 
-.message-bubble {
-  margin-bottom: 16px;
-}
-
-.message-bubble .message-role {
-  font-size: 12px;
-  font-weight: 600;
-  color: #666;
-  margin-bottom: 4px;
-}
-
-.message-bubble.user .message-content {
-  background: #e3f2fd;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 14px;
-}
-
-.message-bubble.assistant .message-content {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 14px;
-}
-
-.message-content p {
-  margin: 0;
-  line-height: 1.5;
-}
-
 .markdown code {
   background: #f5f5f5;
   padding: 1px 4px;
@@ -141,21 +110,6 @@
 
 .app.dark .placeholder-text {
   color: #666;
-}
-
-.app.dark .message-bubble .message-role {
-  color: #999;
-}
-
-.app.dark .message-bubble.user .message-content {
-  background: #1a3a5c;
-  color: #e0e0e0;
-}
-
-.app.dark .message-bubble.assistant .message-content {
-  background: #2a2a2a;
-  border-color: #444;
-  color: #e0e0e0;
 }
 
 .app.dark .markdown code {

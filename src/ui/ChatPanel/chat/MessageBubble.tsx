@@ -1,6 +1,8 @@
 import type { UIMessage } from "ai";
 import MarkdownRenderer from "./MarkdownRenderer";
 import ToolStatus from "../streaming/ToolStatus";
+import { Message, MessageContent, MessageHeader } from "../../shadcn/ui/message";
+import { Bubble, BubbleContent } from "../../shadcn/ui/bubble";
 import "../streaming/streaming.css";
 
 interface MessageBubbleProps {
@@ -8,19 +10,28 @@ interface MessageBubbleProps {
 }
 
 export default function MessageBubble({ message }: MessageBubbleProps) {
+  const align = message.role === "user" ? "end" : "start";
+
   return (
-    <div className={`message-bubble ${message.role}`}>
-      <div className="message-role">
-        {message.role === "user" ? "You" : "Assistant"}
-      </div>
-      <div className="message-content">
+    <Message align={align}>
+      <MessageContent>
+        <MessageHeader>
+          {message.role === "user" ? "You" : "Assistant"}
+        </MessageHeader>
         {message.parts?.map((part, i) => {
           // Plain text part
           if (part.type === "text") {
-            if (message.role === "assistant") {
-              return <MarkdownRenderer key={i} content={part.text} />;
-            }
-            return <p key={i}>{part.text}</p>;
+            return (
+              <Bubble key={i} align={align} variant={message.role === "user" ? "default" : "outline"}>
+                <BubbleContent>
+                  {message.role === "assistant" ? (
+                    <MarkdownRenderer content={part.text} />
+                  ) : (
+                    part.text
+                  )}
+                </BubbleContent>
+              </Bubble>
+            );
           }
 
           // Tool call part: type is `tool-<toolName>` (e.g. tool-generateDiagram)
@@ -38,7 +49,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
 
           return null;
         })}
-      </div>
-    </div>
+      </MessageContent>
+    </Message>
   );
 }
