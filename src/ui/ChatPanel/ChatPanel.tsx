@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useAgent } from "agents/react";
 import { useAgentChat } from "@cloudflare/ai-chat/react";
 import MessageList from "./chat/MessageList";
-import "./chat/chat.css";
+import { Input } from "@/shadcn/ui/input";
+import { Button } from "@/shadcn/ui/button";
+import { SendIcon } from "lucide-react";
 
 // WIP: One agent instance per page load.
 const sessionId = crypto.randomUUID();
@@ -32,27 +34,22 @@ export default function ChatPanel() {
   const isStreaming = status === "submitted" || status === "streaming";
 
   return (
-    <div className="chat-panel">
-      <div className="chat-header">
-        <h2>Chat</h2>
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="border-b px-4 py-3">
+        <h2 className="text-sm font-semibold">Chat</h2>
       </div>
       <MessageList messages={messages} />
-      <form className="chat-input-form" onSubmit={handleSubmit}>
-        <input
+      <form className="flex gap-2 border-t p-3" onSubmit={handleSubmit}>
+        <Input
           type="text"
-          className="chat-input"
           placeholder="Describe a diagram..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           disabled={isStreaming}
         />
-        <button
-          type="submit"
-          className="chat-send-btn"
-          disabled={isStreaming || !input.trim()}
-        >
-          {isStreaming ? "..." : "Send"}
-        </button>
+        <Button type="submit" size="icon" disabled={isStreaming || !input.trim()}>
+          <SendIcon />
+        </Button>
       </form>
     </div>
   );

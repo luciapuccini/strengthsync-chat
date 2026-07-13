@@ -1,21 +1,25 @@
+import { CheckIcon, XIcon } from "lucide-react";
+import { Badge } from "@/shadcn/ui/badge";
+import { Spinner } from "@/shadcn/ui/spinner";
+
 interface ToolStatusProps {
   name: string;
   status: "running" | "complete" | "error";
 }
 
-export default function ToolStatus({ name, status }: ToolStatusProps) {
-  const icon =
-    status === "running" ? "spinner" : status === "complete" ? "check" : "error";
+const variantByStatus = {
+  running: "secondary",
+  complete: "outline",
+  error: "destructive",
+} as const;
 
+export default function ToolStatus({ name, status }: ToolStatusProps) {
   return (
-    <div className={`tool-status ${status}`}>
-      <span className={`tool-icon ${icon}`}>
-        {status === "running" && "⏳"}
-        {status === "complete" && "✓"}
-        {status === "error" && "✗"}
-      </span>
-      <span className="tool-name">{name}</span>
-      {status === "running" && <span className="tool-dots">...</span>}
-    </div>
+    <Badge variant={variantByStatus[status]} className="w-fit">
+      {status === "running" && <Spinner data-icon="inline-start" />}
+      {status === "complete" && <CheckIcon data-icon="inline-start" />}
+      {status === "error" && <XIcon data-icon="inline-start" />}
+      {name}
+    </Badge>
   );
 }

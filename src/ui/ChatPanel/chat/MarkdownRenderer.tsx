@@ -18,5 +18,10 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
     // Line breaks
     .replace(/\n/g, "<br />");
 
-  return <div className="markdown" dangerouslySetInnerHTML={{ __html: html }} />;
+  return (
+    <div
+      className="[&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-xs [&_pre]:overflow-x-auto [&_pre]:rounded-md [&_pre]:bg-muted [&_pre]:p-2 [&_pre]:my-2 [&_pre_code]:bg-transparent [&_pre_code]:p-0"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
 }

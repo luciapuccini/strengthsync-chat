@@ -1,9 +1,8 @@
 import type { UIMessage } from "ai";
 import MarkdownRenderer from "./MarkdownRenderer";
 import ToolStatus from "../streaming/ToolStatus";
-import { Message, MessageContent, MessageHeader } from "../../shadcn/ui/message";
-import { Bubble, BubbleContent } from "../../shadcn/ui/bubble";
-import "../streaming/streaming.css";
+import { Message, MessageContent, MessageHeader } from "@/shadcn/ui/message";
+import { Bubble, BubbleContent } from "@/shadcn/ui/bubble";
 
 interface MessageBubbleProps {
   message: UIMessage;

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import type { UIMessage } from "ai";
 import MessageBubble from "./MessageBubble";
+import { Empty, EmptyDescription } from "@/shadcn/ui/empty";
 
 interface MessageListProps {
   messages: UIMessage[];
@@ -29,16 +30,18 @@ export default function MessageList({ messages }: MessageListProps) {
 
   if (messages.length === 0) {
     return (
-      <div className="message-list empty">
-        <p className="placeholder-text">
-          Describe a diagram and the AI will create it for you.
-        </p>
-      </div>
+      <Empty className="flex-1 border-none">
+        <EmptyDescription>Ask About your training progress!</EmptyDescription>
+      </Empty>
     );
   }
 
   return (
-    <div className="message-list" ref={containerRef} onScroll={handleScroll}>
+    <div
+      className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-4"
+      ref={containerRef}
+      onScroll={handleScroll}
+    >
       {messages.map((msg) => (
         <MessageBubble key={msg.id} message={msg} />
       ))}
