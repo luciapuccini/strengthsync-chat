@@ -1,12 +1,15 @@
-import { generateText, streamText, type ModelMessage } from "ai";
+import { generateText, stepCountIs, streamText, type ModelMessage } from "ai";
 import { SYSTEM_PROMPT } from "./system-propmt";
 import { agentConfig } from "./config";
 import { createOpenAI } from "@ai-sdk/openai";
+import { buildTools } from "./tools/tools";
 
 interface AgentArgs {
   messages: ModelMessage[];
   apiKey: string;
 }
+// WIP:
+const env = process.env;
 // CLOAUDFLARE CLASS
 // Streaming variant. Used by the worker for the live chat experience.
 export function fetchAgentStreamingText({ messages, apiKey }: AgentArgs) {
@@ -15,8 +18,8 @@ export function fetchAgentStreamingText({ messages, apiKey }: AgentArgs) {
     model: openai(agentConfig.openai_base_model),
     messages,
     system: SYSTEM_PROMPT,
-    // tools: buildTools(env),
-    // stopWhen: stepCountIs(maxSteps),
+    tools: buildTools(env),
+    stopWhen: stepCountIs(4),
   });
 }
 
