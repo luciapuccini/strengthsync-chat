@@ -4,7 +4,7 @@ import { queryStaticData } from "./queryStaticData";
 export interface ToolEnv {}
 
 export function buildTools(env: ToolEnv) {
-  console.log("🚀 TOOLS~ env:", env);
+  console.log("🚀 TOOLS ~ :");
   return {
     queryStaticData: queryStaticData(),
   };
