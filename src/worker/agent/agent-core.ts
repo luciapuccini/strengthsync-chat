@@ -24,7 +24,7 @@ export function fetchAgentStreamingText({ messages, apiKey }: AgentArgs) {
 }
 
 // Text variant. Used by Evals.
-export function fetchAgentStaticText({
+export async function fetchAgentStaticText({
   messages,
   apiKey,
   //   maxSteps = 8,
@@ -32,11 +32,16 @@ export function fetchAgentStaticText({
   // const getResponse = agentConfig.isEval ? generateText : streamText;
 
   const openai = createOpenAI({ apiKey });
-  return generateText({
+  const result = await generateText({
     model: openai(agentConfig.openai_base_model),
     messages,
     system: SYSTEM_PROMPT,
-    // tools: buildTools(env),
-    // stopWhen: stepCountIs(maxSteps),
+    tools: buildTools(env),
+    stopWhen: stepCountIs(4),
   });
+  return {
+    text: result.text,
+    steps: result.steps,
+    toolCalls: result.toolCalls,
+  };
 }

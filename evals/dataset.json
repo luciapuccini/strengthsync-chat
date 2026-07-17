@@ -1,0 +1,9 @@
+[
+  {
+    "id": "query-simple-01",
+    "input": "How many documents of the type <Narrative> ",
+    "expectedCharacteristics": ["output contains number 20"],
+    "difficulty": "simple",
+    "category": "chat"
+  }
+]

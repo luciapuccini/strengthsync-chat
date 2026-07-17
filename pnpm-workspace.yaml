@@ -1,4 +1,6 @@
 allowBuilds:
+  autoevals: false
+  braintrust: false
   core-js-pure: false
   esbuild: true
   sharp: true

@@ -10,8 +10,9 @@ export function queryStaticData() {
         .string()
         .describe("User's search query for his static dashboard related data"),
     }),
+    // eval that given a type fromt the dataset the responce cana count how many items
     execute: async ({ userInput }) => {
-      console.log("🚀 TOOL CALL~ userInput:", userInput);
+      console.log("🚀 ~ CALL toll query dta:", userInput);
       try {
         const data = staticData;
         return {
