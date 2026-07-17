@@ -14,7 +14,7 @@ export default function Plan() {
         trainingDays={program.training_days_per_week}
         restDays={program.rest_days_per_week}
       />
-      <Program days={program.program} />
+      <Program program={program} />
     </div>
   );
 }

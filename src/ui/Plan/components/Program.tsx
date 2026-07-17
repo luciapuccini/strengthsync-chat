@@ -2,7 +2,11 @@ import { Copy } from "lucide-react";
 import { Card, CardContent } from "@/shadcn/ui/card";
 import { Button } from "@/shadcn/ui/button";
 import { cn } from "@/shadcn/lib/utils";
-import type { ExcersiseDay } from "../../../types/types";
+import type {
+  ExcersiseDay,
+  StrengthProgramStructure,
+} from "../../../types/types";
+import { parsePlanToMd } from "@/utils/parsePlanToMd";
 
 const dayTypeLabels: Record<string, string> = {
   "upper body": "Tren superior",
@@ -10,12 +14,16 @@ const dayTypeLabels: Record<string, string> = {
 };
 
 interface ProgramProps {
-  days: ExcersiseDay[];
+  program: StrengthProgramStructure;
 }
 
-function copyPlan() {}
+function copyPlan(program: StrengthProgramStructure) {
+  const asMarkdown = parsePlanToMd(program);
+  navigator.clipboard.writeText(asMarkdown).catch(console.error);
+}
 
-export function Program({ days }: ProgramProps) {
+export function Program({ program }: ProgramProps) {
+  const { program: days } = program;
   return (
     <Card>
       <CardContent className="flex flex-col">
@@ -27,7 +35,7 @@ export function Program({ days }: ProgramProps) {
             variant="outline"
             size="sm"
             className="border-primary/40 bg-primary/15 text-primary hover:bg-primary/25 hover:text-primary"
-            onClick={copyPlan}
+            onClick={() => copyPlan(program)}
           >
             <Copy className="size-3.5" />
             Copiar semana
@@ -51,7 +59,7 @@ function DayBlock({ day, isFirst }: { day: ExcersiseDay; isFirst: boolean }) {
             "rounded-full px-2 py-1 text-[10px] font-bold tracking-wide uppercase",
             isUpperBody
               ? "bg-primary/15 text-primary"
-              : "bg-foreground/10 text-foreground/70"
+              : "bg-foreground/10 text-foreground/70",
           )}
         >
           {dayTypeLabels[day.type] ?? day.type}
