@@ -8,9 +8,7 @@ interface AgentArgs {
   messages: ModelMessage[];
   apiKey: string;
 }
-// WIP:
-const env = process.env;
-// CLOAUDFLARE CLASS
+
 // Streaming variant. Used by the worker for the live chat experience.
 export function fetchAgentStreamingText({ messages, apiKey }: AgentArgs) {
   const openai = createOpenAI({ apiKey });
@@ -18,7 +16,7 @@ export function fetchAgentStreamingText({ messages, apiKey }: AgentArgs) {
     model: openai(agentConfig.openai_base_model),
     messages,
     system: SYSTEM_PROMPT,
-    tools: buildTools(env),
+    tools: buildTools(),
     stopWhen: stepCountIs(4),
   });
 }
@@ -36,7 +34,7 @@ export async function fetchAgentStaticText({
     model: openai(agentConfig.openai_base_model),
     messages,
     system: SYSTEM_PROMPT,
-    tools: buildTools(env),
+    tools: buildTools(),
     stopWhen: stepCountIs(4),
   });
   return {

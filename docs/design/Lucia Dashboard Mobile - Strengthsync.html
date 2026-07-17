@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lucia — Panel (Mobile)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--leg-color:oklch(96% 0 0)}
+body{background:#0a0a0a;font-family:'Inter',sans-serif;color:oklch(92% 0.01 80);min-height:100vh}
+.bg-grid{position:fixed;inset:0;background-image:linear-gradient(oklch(100% 0 0/0.03) 1px,transparent 1px),linear-gradient(90deg,oklch(100% 0 0/0.03) 1px,transparent 1px);background-size:44px 44px;pointer-events:none}
+.glow{position:fixed;top:-160px;left:-140px;width:420px;height:420px;background:radial-gradient(ellipse at center,oklch(82% 0.18 88/0.12) 0%,transparent 70%);pointer-events:none}
+.wrap{max-width:430px;margin:0 auto;padding:28px 18px 70px;position:relative}
+.header-m{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.avatar{width:46px;height:46px;border-radius:50%;background:oklch(82% 0.18 88/0.15);border:1.5px solid oklch(82% 0.18 88/0.4);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:oklch(82% 0.18 88);flex-shrink:0}
+.header-m h1{font-size:19px;font-weight:800;letter-spacing:-0.01em;margin-bottom:2px}
+.header-m p{font-size:12.5px;color:oklch(58% 0 0)}
+.stat-pills{display:flex;gap:8px;margin-bottom:28px}
+.pill{background:oklch(14% 0 0);border:1px solid oklch(100% 0 0/0.10);border-radius:100px;padding:7px 13px;font-size:11.5px;font-weight:600;color:oklch(62% 0 0)}
+.pill b{color:oklch(90% 0.01 80);font-weight:800}
+.sec-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:0 2px}
+.sec-title h2{font-size:15px;font-weight:800;letter-spacing:-0.01em}
+.sec-title span{font-size:11.5px;color:oklch(48% 0 0)}
+section{margin-bottom:32px}
+.week-scroll{display:flex;gap:9px;overflow-x:auto;padding:2px 2px 8px;margin:0 -2px;scrollbar-width:none}
+.week-scroll::-webkit-scrollbar{display:none}
+.day-chip{flex:0 0 auto;width:74px;background:oklch(14% 0 0);border:1px solid oklch(100% 0 0/0.09);border-radius:14px;padding:12px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:7px}
+.day-chip.training{background:oklch(20% 0.02 88);border-color:oklch(82% 0.18 88/0.22)}
+.day-chip.today .chip-label{color:oklch(82% 0.18 88)}
+.day-chip.today{border-color:oklch(82% 0.18 88/0.5);box-shadow:0 0 0 1px oklch(82% 0.18 88/0.25),0 0 16px oklch(82% 0.18 88/0.15)}
+.chip-label{font-size:10.5px;font-weight:700;letter-spacing:0.06em;color:oklch(50% 0 0);text-transform:uppercase}
+.chip-badge{font-size:9.5px;font-weight:800;padding:4px 7px;border-radius:100px;text-transform:uppercase;letter-spacing:0.02em;white-space:nowrap}
+.chip-badge.upper{background:oklch(82% 0.18 88/0.18);color:oklch(82% 0.18 88)}
+.chip-badge.leg{background:color-mix(in oklch,var(--leg-color) 20%,transparent);color:var(--leg-color)}
+.chip-badge.rest{background:oklch(100% 0 0/0.06);color:oklch(45% 0 0)}
+.chip-moves{display:flex;gap:4px;margin-top:2px}
+.move-btn{width:22px;height:22px;border-radius:6px;background:oklch(100% 0 0/0.06);border:1px solid oklch(100% 0 0/0.10);color:oklch(60% 0 0);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.move-btn:active:not(:disabled){background:oklch(82% 0.18 88/0.2);color:oklch(82% 0.18 88)}
+.move-btn:disabled{opacity:0.25}
+.move-btn svg{width:11px;height:11px}
+.program-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:0 2px}
+.program-head h2{font-size:20px;font-weight:900;letter-spacing:-0.02em}
+.program-head h2 em{font-style:normal;color:oklch(82% 0.18 88)}
+.progress-bar{width:78px;height:7px;border-radius:100px;background:oklch(100% 0 0/0.08);overflow:hidden;margin-bottom:5px;margin-left:auto}
+.progress-fill{height:100%;background:oklch(82% 0.18 88);border-radius:100px}
+.progress-wrap span{font-size:10.5px;color:oklch(50% 0 0);font-weight:600;display:block;text-align:right}
+.plan-card{background:oklch(14% 0 0);border:1px solid oklch(100% 0 0/0.10);border-radius:18px;padding:6px 18px 8px}
+.plan-top{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid oklch(100% 0 0/0.08)}
+.plan-top span{font-size:13px;font-weight:700;color:oklch(80% 0.01 80)}
+.copy-btn{display:flex;align-items:center;gap:6px;background:oklch(82% 0.18 88/0.14);border:1px solid oklch(82% 0.18 88/0.4);border-radius:9px;padding:8px 14px;font-size:12.5px;font-weight:700;color:oklch(82% 0.18 88);cursor:pointer}
+.copy-btn.copied{background:oklch(75% 0.18 145/0.14);border-color:oklch(75% 0.18 145/0.4);color:oklch(75% 0.18 145)}
+.copy-btn svg{width:13px;height:13px}
+.day-block{padding:16px 0}
+.day-block + .day-block{border-top:1px solid oklch(100% 0 0/0.07)}
+.day-block-head{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.day-num{font-size:11.5px;font-weight:700;color:oklch(45% 0 0)}
+.rt-row{display:flex;align-items:center;gap:9px;padding:7px 0}
+.rt-idx{font-size:10.5px;font-weight:700;color:oklch(38% 0 0);width:14px;flex-shrink:0}
+.rt-name{font-size:12.5px;font-weight:600;color:oklch(85% 0.01 80);flex:1;letter-spacing:0.01em}
+.rt-meta{font-size:11px;font-weight:700;color:oklch(58% 0 0);white-space:nowrap;text-align:right}
+.rt-note{font-size:9.5px;font-weight:700;color:oklch(82% 0.18 88);background:oklch(82% 0.18 88/0.12);padding:2px 6px;border-radius:100px;white-space:nowrap;text-transform:uppercase}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:oklch(18% 0 0);border:1px solid oklch(100% 0 0/0.12);border-radius:12px;padding:11px 20px;font-size:12.5px;font-weight:600;color:oklch(90% 0.01 80);opacity:0;transition:.25s;pointer-events:none;z-index:10}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="glow"></div>
+<div class="wrap">
+  <div class="header-m">
+    <div class="avatar">L</div>
+    <div>
+      <h1>Hola, Lucia</h1>
+      <p>Semana 3 de 6 · Plan de fuerza</p>
+    </div>
+  </div>
+  <div class="stat-pills">
+    <div class="pill"><b id="statTrain">4</b> entrenos</div>
+    <div class="pill"><b id="statRest">3</b> descansos</div>
+  </div>
+
+  <section>
+    <div class="sec-title"><h2>Distribución semanal</h2><span>Desliza y reordena</span></div>
+    <div class="week-scroll" id="weekRow"></div>
+  </section>
+
+  <section>
+    <div class="program-head">
+      <h2>Semana <em id="curWeek">3</em>/<span id="totWeek">6</span></h2>
+      <div>
+        <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+        <div class="progress-wrap"><span id="progLabel"></span></div>
+      </div>
+    </div>
+    <div class="plan-card">
+      <div class="plan-top">
+        <span>Plan completo</span>
+        <button class="copy-btn" id="copyAllBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg><span>Copiar semana</span></button>
+      </div>
+      <div id="dayBlocks"></div>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast">Copiado al portapapeles</div>
+<script>
+const data = {
+  current_week: 3, total_weeks: 6, training_days_per_week: 4, rest_days_per_week: 3,
+  program: [
+    {id:1,type:"upper body",routine:[
+      {name:"PRES BANCA PLANO",series:4,reps:8,rest_time:90},
+      {name:"JALÓN AL PECHO",series:4,reps:12,rest_time:90},
+      {name:"REMO GIRONDA",series:3,reps:12,rest_time:90},
+      {name:"PRES HOMBRO BARRA BAJA",series:3,reps:10,rest_time:90},
+      {name:"CURL DE BICEPS",series:3,reps:12,rest_time:90},
+      {name:"EXTENSIÓN TRICEPS POLEA",series:3,reps:12,rest_time:90},
+      {name:"FLEXIONES",series:3,reps:8,rest_time:90}
+    ]},
+    {id:2,type:"leg day",routine:[
+      {name:"SENTADILLA FRONTAL",series:3,reps:10,rest_time:90},
+      {name:"PESO MUERTO",series:4,reps:10,rest_time:90},
+      {name:"ZANCADAS",series:4,reps:15,rest_time:90},
+      {name:"HIPEREXTENSIÓN",series:3,reps:12,rest_time:90},
+      {name:"EXTENSIÓN CUÁDRICEPS",series:3,reps:12,rest_time:90},
+      {name:"LEG CURL",series:3,reps:12,rest_time:90}
+    ]},
+    {id:3,type:"upper body",routine:[
+      {name:"DOMINADAS",series:4,reps:6,rest_time:90,notes:"CON GOMA"},
+      {name:"REMO 45",series:4,reps:10,rest_time:90},
+      {name:"ELEVACIÓN LATERAL",series:3,reps:8,rest_time:90},
+      {name:"DOMINADAS BARRA BAJA",series:3,reps:8,rest_time:90},
+      {name:"EXTENSIÓN TRICEPS TRAS NUCA",series:3,reps:12,rest_time:90},
+      {name:"FACE PULL",series:3,reps:12,rest_time:90}
+    ]},
+    {id:4,type:"leg day",routine:[
+      {name:"SENTADILLA",series:4,reps:10,rest_time:90},
+      {name:"PESO MUERTO",series:4,reps:10,rest_time:90},
+      {name:"SUMO",series:3,reps:8,rest_time:90},
+      {name:"HIPTHRUST",series:3,reps:10,rest_time:90},
+      {name:"PATADA DE GLÚTEO",series:3,reps:10,rest_time:90},
+      {name:"STEP UP",series:3,reps:8,rest_time:90},
+      {name:"EXTENSIÓN DE CUÁDRICEPS",series:3,reps:12,rest_time:90}
+    ]}
+  ]
+};
+
+const dayLabels = ["LUN","MAR","MIÉ","JUE","VIE","SÁB","DOM"];
+let week = [data.program[0], data.program[1], null, data.program[2], data.program[3], null, null];
+
+document.getElementById('statTrain').textContent = data.training_days_per_week;
+document.getElementById('statRest').textContent = data.rest_days_per_week;
+document.getElementById('curWeek').textContent = data.current_week;
+document.getElementById('totWeek').textContent = data.total_weeks;
+const pct = Math.round(data.current_week/data.total_weeks*100);
+document.getElementById('progFill').style.width = pct+'%';
+document.getElementById('progLabel').textContent = pct+'% completado';
+
+const arrowLeft = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>';
+const arrowRight = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>';
+
+function typeBadgeClass(type){ return type==='upper body' ? 'upper' : 'leg'; }
+function typeShort(type){ return type==='upper body' ? 'Sup.' : 'Pier.'; }
+function typeLabel(type){ return type==='upper body' ? 'Tren superior' : 'Pierna'; }
+
+function renderWeek(){
+  const todayIdx = (new Date().getDay()+6)%7;
+  const row = document.getElementById('weekRow');
+  row.innerHTML = week.map((session,i)=>{
+    const isTraining = !!session;
+    const isToday = i===todayIdx;
+    return `<div class="day-chip ${isTraining?'training':''} ${isToday?'today':''}">
+      <div class="chip-label">${dayLabels[i]}</div>
+      <div class="chip-badge ${isTraining?typeBadgeClass(session.type):'rest'}">${isTraining?typeShort(session.type):'Desc.'}</div>
+      <div class="chip-moves">
+        <button class="move-btn" data-i="${i}" data-dir="-1" ${i===0?'disabled':''}>${arrowLeft}</button>
+        <button class="move-btn" data-i="${i}" data-dir="1" ${i===week.length-1?'disabled':''}>${arrowRight}</button>
+      </div>
+    </div>`;
+  }).join('');
+  row.querySelectorAll('.move-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const i = parseInt(btn.dataset.i), dir = parseInt(btn.dataset.dir);
+      const j = i+dir;
+      if(j<0||j>=week.length) return;
+      [week[i],week[j]] = [week[j],week[i]];
+      renderWeek();
+    });
+  });
+}
+
+function formatDayText(session){
+  const lines = [`${typeLabel(session.type).toUpperCase()} — DÍA ${session.id}`];
+  session.routine.forEach((ex,idx)=>{
+    let line = `${idx+1}. ${ex.name} — ${ex.series}x${ex.reps} (descanso ${ex.rest_time}s)`;
+    if(ex.notes) line += ` [${ex.notes}]`;
+    lines.push(line);
+  });
+  return lines.join('\n');
+}
+
+function formatWeekText(){
+  const header = `SEMANA ${data.current_week}/${data.total_weeks}`;
+  const blocks = data.program.map(formatDayText);
+  return [header,'',...blocks.join('\n\n').split('\n')].join('\n');
+}
+
+function showToast(){
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=>t.classList.remove('show'),1800);
+}
+
+function renderProgram(){
+  const wrap = document.getElementById('dayBlocks');
+  wrap.innerHTML = data.program.map(session=>{
+    const rows = session.routine.map((ex,idx)=>`<div class="rt-row">
+      <div class="rt-idx">${idx+1}</div>
+      <div class="rt-name">${ex.name}${ex.notes?` <span class="rt-note">${ex.notes}</span>`:''}</div>
+      <div class="rt-meta">${ex.series}×${ex.reps} · ${ex.rest_time}s</div>
+    </div>`).join('');
+    return `<div class="day-block">
+      <div class="day-block-head">
+        <div class="chip-badge ${typeBadgeClass(session.type)}">${typeLabel(session.type)}</div>
+        <span class="day-num">Día ${session.id}</span>
+      </div>
+      ${rows}
+    </div>`;
+  }).join('');
+}
+
+document.getElementById('copyAllBtn').addEventListener('click', async(e)=>{
+  const btn = e.currentTarget;
+  const text = formatWeekText();
+  try{ await navigator.clipboard.writeText(text); }catch(err){}
+  btn.classList.add('copied');
+  btn.querySelector('span').textContent = 'Copiado';
+  showToast();
+  setTimeout(()=>{btn.classList.remove('copied');btn.querySelector('span').textContent='Copiar semana';},1600);
+});
+
+renderWeek();
+renderProgram();
+</script>
+</body>
+</html>
