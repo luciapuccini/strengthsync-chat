@@ -14,8 +14,11 @@ type StrengthProgramStructure = {
 
 // bloque de ejercicios - 1 dia/ rutina
 type ExcersiseDay = {
+  id: number;
   routine: WeightExcersise[];
-  type: "leg day" | "upper body";
+  type: "leg day" | "upper body" | "rest";
+  date?: string;
+  completed?: boolean;
 };
 
 type WeightExcersise = {
@@ -24,6 +27,8 @@ type WeightExcersise = {
   reps: number;
   rest_time: number;
   notes?: string;
+  weight_kg?: number;
+  performed_reps?: number[];
 };
 
 export type { Weight, StrengthProgramStructure, WeightExcersise, ExcersiseDay };

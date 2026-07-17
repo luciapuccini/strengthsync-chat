@@ -3,9 +3,9 @@
   "total_weeks": 6,
   "training_days_per_week": 4,
   "rest_days_per_week": 3,
-
   "program": [
     {
+      "id": 1,
       "type": "upper body",
       "routine": [
         { "name": "PRES BANCA PLANO", "series": 4, "reps": 8, "rest_time": 90 },
@@ -28,6 +28,7 @@
       ]
     },
     {
+      "id": 2,
       "type": "leg day",
       "routine": [
         {
@@ -49,6 +50,7 @@
       ]
     },
     {
+      "id": 3,
       "type": "upper body",
       "routine": [
         {
@@ -81,6 +83,7 @@
       ]
     },
     {
+      "id": 4,
       "type": "leg day",
       "routine": [
         { "name": "SENTADILLA", "series": 4, "reps": 10, "rest_time": 90 },

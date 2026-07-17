@@ -1,11 +1,6 @@
 import programData from "../../app/dashboard/program.json";
 import { Badge } from "@/shadcn/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/shadcn/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shadcn/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shadcn/ui/tabs";
 import type { ExcersiseDay, StrengthProgramStructure } from "../../types/types";
 
@@ -94,31 +89,6 @@ export default function Plan() {
           <DayCard key={i} day={day} />
         ))}
       </div>
-
-      <Tabs defaultValue="0">
-        <TabsList>
-          {weekSchedule.map((day, i) => (
-            <TabsTrigger key={i} value={String(i)}>
-              {day.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        {(() => {
-          let trainingIndex = 0;
-          return weekSchedule.map((day, i) => {
-            const content = day.isRestDay ? (
-              <RestDayCard />
-            ) : (
-              <DayCard day={program.program[trainingIndex++]} />
-            );
-            return (
-              <TabsContent key={i} value={String(i)}>
-                {content}
-              </TabsContent>
-            );
-          });
-        })()}
-      </Tabs>
     </div>
   );
 }
