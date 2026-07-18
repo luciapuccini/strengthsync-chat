@@ -26,5 +26,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
-  "exclude": ["src/worker/**"]
+  "exclude": ["src/worker/**", "src/temporal/**"]
 }

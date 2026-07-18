@@ -3,3 +3,9 @@ OPENAI_API_KEY=
 BRAINTRUST_API_KEY=
 UPSTASH_VECTOR_REST_URL=
 UPSTASH_VECTOR_REST_TOKEN=
+
+# Temporal Cloud (optional) — when set, `pnpm temporal:worker` / `pnpm temporal:api`
+# connect to Cloud instead of the local dev server. Leave empty for local dev.
+TEMPORAL_ADDRESS=
+TEMPORAL_NAMESPACE=
+TEMPORAL_API_KEY=

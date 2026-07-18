@@ -8,6 +8,7 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.temporal.json" },
     { "path": "./tsconfig.worker.json" }
   ]
 }

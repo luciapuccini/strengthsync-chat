@@ -1,7 +1,9 @@
 allowBuilds:
-  autoevals: false
-  braintrust: false
-  core-js-pure: false
+  "@swc/core": true
+  autoevals: true
+  braintrust: true
+  core-js-pure: true
   esbuild: true
+  protobufjs: true
   sharp: true
   workerd: true
