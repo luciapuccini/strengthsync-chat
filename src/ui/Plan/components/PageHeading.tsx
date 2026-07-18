@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback } from "@/shadcn/ui/avatar";
 import { CompleteWeekButton } from "./CompleteWeekButton";
+import { GeneratePlanButton } from "./GeneratePlanButton";
 
 interface PageHeadingProps {
   name?: string;
@@ -34,7 +35,10 @@ export function PageHeading({
             </p>
           </div>
         </div>
-        <CompleteWeekButton />
+        <div className="flex items-center gap-2">
+          <GeneratePlanButton />
+          <CompleteWeekButton />
+        </div>
       </div>
       <div className="flex gap-2">
         <StatPill value={trainingDays} label="entrenos" />

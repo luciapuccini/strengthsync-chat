@@ -1,20 +1,22 @@
 import { tool } from "ai";
 import { z } from "zod";
-import staticData from "../../../app/dashboard/program.json";
+import ClientProgress from "../../../app/dashboard/progress.json";
 
-export function queryStaticData() {
+export function queryClientProgress() {
   return tool({
-    description: `Get the user's data from the dashboard. Use this tool when requested about "documents" "sales" "revenue" "customers"`,
+    description: `Get the Client's current plan progress information. useful to answer progression related to previous weeks.`,
     inputSchema: z.object({
       userInput: z
         .string()
-        .describe("User's search query for his static dashboard related data"),
+        .describe(
+          "User's search query for information about historical progress in the current plan",
+        ),
     }),
     // eval that given a type fromt the dataset the responce cana count how many items
     execute: async ({ userInput }) => {
-      console.log("🚀 ~ CALL toll query dta:", userInput);
+      console.log("🚀 ~ CALL client progress:", userInput);
       try {
-        const data = staticData;
+        const data = ClientProgress;
         return {
           userInput,
           data,

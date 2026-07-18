@@ -3,7 +3,11 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { getTemporalClient } from "./client.ts";
 import { TASK_QUEUE, TEMPORAL_API_PORT, UI_ORIGIN } from "./shared.ts";
-import { sampleWorkflow, weeklyProgressWorkflow } from "./workflows.ts";
+import {
+  planGenerationWorkflow,
+  sampleWorkflow,
+  weeklyProgressWorkflow,
+} from "./workflows.ts";
 
 const app = new Hono();
 
@@ -48,6 +52,31 @@ app.post("/api/workflows/weekly-progress", async (c) => {
     return c.json({ workflowId, ...result });
   } catch (err) {
     console.error("[temporal api] weeklyProgressWorkflow failed", err);
+    return c.json(
+      { error: err instanceof Error ? err.message : "Unknown error" },
+      500,
+    );
+  }
+});
+
+app.post("/api/workflows/plan-generation", async (c) => {
+  const body = await c.req
+    .json<{ quizNotes?: string }>()
+    .catch(() => ({}) as { quizNotes?: string });
+
+  try {
+    const client = await getTemporalClient();
+    const workflowId = `plan-generation-${Date.now()}`;
+    // execute() blocks through 3 LLM calls (~30-90s) — the HTTP response
+    // carries the generated plan + rationale back to the UI.
+    const result = await client.workflow.execute(planGenerationWorkflow, {
+      taskQueue: TASK_QUEUE,
+      workflowId,
+      args: [body.quizNotes ?? ""],
+    });
+    return c.json({ workflowId, ...result });
+  } catch (err) {
+    console.error("[temporal api] planGenerationWorkflow failed", err);
     return c.json(
       { error: err instanceof Error ? err.message : "Unknown error" },
       500,

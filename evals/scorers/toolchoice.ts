@@ -32,11 +32,12 @@ export const toolChoiceScorer: EvalScorer<
   GoldenTestCase
 > = ({ output, expected }) => {
   const calls = output.toolCalls ?? [];
+  console.log("🤖 AGENT ~ calls:", calls);
 
   const category = expected.category;
 
   if (category === "chat") {
-    const ok = calls.some((c) => c.toolName === "queryStaticData");
+    const ok = calls.some((c) => c.toolName.includes("queryClient"));
 
     return {
       name: "ToolChoice",
@@ -44,7 +45,7 @@ export const toolChoiceScorer: EvalScorer<
       metadata: {
         category,
         calls,
-        reason: ok ? "queryStaticData called" : "queryStaticData not called",
+        reason: ok ? "queryClient called" : "queryClient not called",
       },
     };
   }

@@ -118,8 +118,6 @@ type WeightExcersises {
 ## Every end of plan
 
 1. gather info on user progress, likes & dislikes:
-   - programatic, maybe a quiz. json file for the weeks should reflect main issues
-   - notes? chat weekly interactions?
-2. given a fix set of "expert" rules + this context -> AI generate new plan
-3. update the base template, the app state & copy assets
-4. create a csv to export to trainer?
+   - programatic, a quiz. json file for the weeks should reflect main issues
+2. given a fix set of "coach" rules + this context -> AI generate new plan
+3. update the base progress template, the app state & necessary assets.

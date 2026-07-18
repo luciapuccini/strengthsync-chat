@@ -1,4 +1,5 @@
 import {
+  generateObject,
   generateText,
   stepCountIs,
   streamText,
@@ -6,6 +7,7 @@ import {
   type ToolSet,
 } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
+import type { z } from "zod";
 import { agentConfig } from "./config.ts";
 
 interface AgentArgs {
@@ -61,4 +63,29 @@ export async function fetchAgentStaticText({
     steps: result.steps,
     toolCalls: result.toolCalls,
   };
+}
+
+interface AgentObjectArgs<T extends z.ZodType> {
+  messages: ModelMessage[];
+  apiKey: string;
+  system: string;
+  schema: T;
+}
+
+// Structured-output variant. Used when the result must be machine-readable
+// (e.g. the plan-generation workflow produces the new program.json).
+export async function fetchAgentObject<T extends z.ZodType>({
+  messages,
+  apiKey,
+  system,
+  schema,
+}: AgentObjectArgs<T>): Promise<{ object: z.infer<T> }> {
+  const openai = createOpenAI({ apiKey });
+  const result = await generateObject({
+    model: openai(agentConfig.openai_base_model),
+    messages,
+    system,
+    schema,
+  });
+  return { object: result.object as z.infer<T> };
 }

@@ -1,7 +1,11 @@
-import { queryStaticData } from "./queryStaticData";
+import { queryClientProfile } from "./queryClientProfile";
+import { queryClientProgram } from "./queryClientProgram";
+import { queryClientProgress } from "./queryClientProgress";
 
 export function buildTools() {
   return {
-    queryStaticData: queryStaticData(),
+    queryClientProfile: queryClientProfile(),
+    queryClientProgram: queryClientProgram(),
+    queryClientProgress: queryClientProgress(),
   };
 }

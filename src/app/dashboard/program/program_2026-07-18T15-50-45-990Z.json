@@ -82,7 +82,7 @@
           "series": 4,
           "reps": 15,
           "rest_time": 90,
-          "weight_kg": 15
+          "weight_kg": 20
         },
         {
           "name": "HIPEREXTENSIÓN",
@@ -103,7 +103,7 @@
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 27.5
+          "weight_kg": 30
         }
       ]
     },

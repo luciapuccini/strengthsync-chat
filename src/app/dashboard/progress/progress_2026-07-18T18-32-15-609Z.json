@@ -7,6 +7,8 @@
     {
       "id": 1,
       "type": "upper body",
+      "date": "2026-07-20",
+      "completed": false,
       "routine": [
         {
           "name": "PRES BANCA PLANO",
@@ -62,6 +64,8 @@
     {
       "id": 2,
       "type": "leg day",
+      "date": "2026-07-21",
+      "completed": false,
       "routine": [
         {
           "name": "SENTADILLA FRONTAL",
@@ -82,7 +86,7 @@
           "series": 4,
           "reps": 15,
           "rest_time": 90,
-          "weight_kg": 15
+          "weight_kg": 20
         },
         {
           "name": "HIPEREXTENSIÓN",
@@ -103,19 +107,23 @@
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 27.5
+          "weight_kg": 30
         }
       ]
     },
     {
       "id": 3,
       "type": "swimming",
+      "date": "2026-07-22",
+      "completed": false,
       "notes": "Natación técnica + pirámide. Mantener SWOLF ≤53, ritmo medio progresivo y FC controlada. Si hay fatiga, priorizar calidad sobre volumen.",
       "routine": []
     },
     {
       "id": 4,
       "type": "upper body",
+      "date": "2026-07-23",
+      "completed": false,
       "routine": [
         {
           "name": "DOMINADAS",
@@ -163,12 +171,16 @@
     {
       "id": 5,
       "type": "swimming",
+      "date": "2026-07-24",
+      "completed": false,
       "notes": "Natación endurance 2000 m. Mantener FC ≤125 bpm y buscar eficiencia técnica. Buena opción de descarga activa.",
       "routine": []
     },
     {
       "id": 6,
       "type": "leg day",
+      "date": "2026-07-25",
+      "completed": false,
       "routine": [
         {
           "name": "SENTADILLA",
@@ -223,6 +235,8 @@
     {
       "id": 7,
       "type": "rest",
+      "date": "2026-07-26",
+      "completed": false,
       "notes": "Descanso activo: objetivo 10k pasos + movilidad suave. Si apetece, añadir 20-30 min de cardio muy suave o caminar; prioridad recuperar para la siguiente semana.",
       "routine": []
     }

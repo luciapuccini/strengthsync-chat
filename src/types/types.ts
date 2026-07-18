@@ -16,9 +16,11 @@ type StrengthProgramStructure = {
 type ExcersiseDay = {
   id: number;
   routine: WeightExcersise[];
-  type: "leg day" | "upper body" | "rest";
+  type: "leg day" | "upper body" | "rest" | "swimming" | "cardio";
   date?: string;
   completed?: boolean;
+  // Day-level notes (e.g. rest-day light-activity prescriptions, rule 4).
+  notes?: string;
 };
 
 type WeightExcersise = {
