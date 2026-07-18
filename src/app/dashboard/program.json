@@ -1,0 +1,109 @@
+{
+  "current_week": 3,
+  "total_weeks": 6,
+  "training_days_per_week": 4,
+  "rest_days_per_week": 3,
+  "program": [
+    {
+      "id": 1,
+      "type": "upper body",
+      "routine": [
+        { "name": "PRES BANCA PLANO", "series": 4, "reps": 8, "rest_time": 90 },
+        { "name": "JALÓN AL PECHO", "series": 4, "reps": 12, "rest_time": 90 },
+        { "name": "REMO GIRONDA", "series": 3, "reps": 12, "rest_time": 90 },
+        {
+          "name": "PRES HOMBRO BARRA BAJA",
+          "series": 3,
+          "reps": 10,
+          "rest_time": 90
+        },
+        { "name": "CURL DE BICEPS", "series": 3, "reps": 12, "rest_time": 90 },
+        {
+          "name": "EXTENSIÓN TRICEPS POLEA",
+          "series": 3,
+          "reps": 12,
+          "rest_time": 90
+        },
+        { "name": "FLEXIONES", "series": 3, "reps": 8, "rest_time": 90 }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "leg day",
+      "routine": [
+        {
+          "name": "SENTADILLA FRONTAL",
+          "series": 3,
+          "reps": 10,
+          "rest_time": 90
+        },
+        { "name": "PESO MUERTO", "series": 4, "reps": 10, "rest_time": 90 },
+        { "name": "ZANCADAS", "series": 4, "reps": 15, "rest_time": 90 },
+        { "name": "HIPEREXTENSIÓN", "series": 3, "reps": 12, "rest_time": 90 },
+        {
+          "name": "EXTENSIÓN CUÁDRICEPS",
+          "series": 3,
+          "reps": 12,
+          "rest_time": 90
+        },
+        { "name": "LEG CURL", "series": 3, "reps": 12, "rest_time": 90 }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "upper body",
+      "routine": [
+        {
+          "name": "DOMINADAS",
+          "series": 4,
+          "reps": 6,
+          "rest_time": 90,
+          "notes": "CON GOMA"
+        },
+        { "name": "REMO 45", "series": 4, "reps": 10, "rest_time": 90 },
+        {
+          "name": "ELEVACIÓN LATERAL",
+          "series": 3,
+          "reps": 8,
+          "rest_time": 90
+        },
+        {
+          "name": "DOMINADAS BARRA BAJA",
+          "series": 3,
+          "reps": 8,
+          "rest_time": 90
+        },
+        {
+          "name": "EXTENSIÓN TRICEPS TRAS NUCA",
+          "series": 3,
+          "reps": 12,
+          "rest_time": 90
+        },
+        { "name": "FACE PULL", "series": 3, "reps": 12, "rest_time": 90 }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "leg day",
+      "routine": [
+        { "name": "SENTADILLA", "series": 4, "reps": 10, "rest_time": 90 },
+        { "name": "PESO MUERTO", "series": 4, "reps": 10, "rest_time": 90 },
+        { "name": "SUMO", "series": 3, "reps": 8, "rest_time": 90 },
+        { "name": "HIPTHRUST", "series": 3, "reps": 10, "rest_time": 90 },
+        {
+          "name": "PATADA DE GRUTEO",
+          "series": 3,
+          "reps": 10,
+          "rest_time": 90
+        },
+        { "name": "STEP UP", "series": 3, "reps": 8, "rest_time": 90 },
+        {
+          "name": "EXTENSIÓN DE CUÁDRICEPS",
+          "series": 3,
+          "reps": 12,
+          "rest_time": 90
+        }
+      ]
+    }
+  ]
+}

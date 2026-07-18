@@ -1,6 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
-import staticData from "../../../app/dashboard/data.json";
+import staticData from "../../../app/dashboard/program.json";
 
 export function queryStaticData() {
   return tool({
