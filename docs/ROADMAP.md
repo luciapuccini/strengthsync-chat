@@ -1,11 +1,11 @@
-## StrengthSync AI Planning
+# StrengthSync AI Planning
 
 ## What problems are we trying to solve?
 
 - lots of health data collected through devices, no actionable output
 - I have a gim routine very static, It should adapt to my needs every day. With data I want to know when I should push or when I should rest always keeping my targets prioritized
 - fitness is not just the 1hr training in the gym, there is a lot arund the day that could push my progress forward
-- 
+-
 
 # MVP definition
 
@@ -55,7 +55,7 @@ type BodyComposition {
 			bmr_kcal: number,
 			tdee_kcal: number,
             created_at:Date,
-		},  
+		},
 }
 
 // current data only
@@ -81,7 +81,7 @@ type NutritionData {
 		current_week: number
         weeks_per_block:number
 		training_days_per_week: number
-		rest_days_per_week:number 
+		rest_days_per_week:number
         weekly_shedule:WeeklyShedule
         daily_steps_target:number
         daily_move_target: ...
@@ -103,3 +103,21 @@ type WeightExcersises {
     updated_at:Date
 }
 ```
+
+# Workflows discovery
+
+## Every week
+
+1. user will mark week as complete -- trigger
+2. action summary of progress file, check notes for actionable items etc .. AI
+3. output to chat?
+4. if() program /plan complete (no more weeks)
+   4.1 new plan -- trigger other WF?
+   4.2 generate this week's template from the plan
+
+## Every end of plan
+
+1. gather info on user progress, likes & dislikes:
+   - programatic, a quiz. json file for the weeks should reflect main issues
+2. given a fix set of "coach" rules + this context -> AI generate new plan
+3. update the base progress template, the app state & necessary assets.

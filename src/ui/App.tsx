@@ -2,6 +2,7 @@ import { AppSidebar } from "@/shadcn/app-sidebar";
 
 import { SiteHeader } from "@/shadcn/site-header";
 import { SidebarInset, SidebarProvider } from "@/shadcn/ui/sidebar";
+import { Toaster } from "@/shadcn/ui/sonner";
 import Plan from "./Plan/Plan";
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
           </div>
         </div>
       </SidebarInset>
+      <Toaster />
     </SidebarProvider>
   );
 }

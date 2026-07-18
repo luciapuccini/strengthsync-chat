@@ -11,6 +11,9 @@ import { parsePlanToMd } from "@/utils/parsePlanToMd";
 const dayTypeLabels: Record<string, string> = {
   "upper body": "Tren superior",
   "leg day": "Pierna",
+  swimming: "Natación",
+  cardio: "Cardio",
+  rest: "Descanso",
 };
 
 interface ProgramProps {
@@ -68,6 +71,9 @@ function DayBlock({ day, isFirst }: { day: ExcersiseDay; isFirst: boolean }) {
           Día {day.id}
         </span>
       </div>
+      {day.notes && (
+        <p className="mb-2 text-xs text-muted-foreground">{day.notes}</p>
+      )}
       <div className="flex flex-col">
         {day.routine.map((exercise, i) => (
           <div key={exercise.name} className="flex items-center gap-2 py-1.5">

@@ -1,4 +1,6 @@
 import { Avatar, AvatarFallback } from "@/shadcn/ui/avatar";
+import { CompleteWeekButton } from "./CompleteWeekButton";
+import { GeneratePlanButton } from "./GeneratePlanButton";
 
 interface PageHeadingProps {
   name?: string;
@@ -17,19 +19,25 @@ export function PageHeading({
 }: PageHeadingProps) {
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-3">
-        <Avatar size="lg" className="border border-primary/40">
-          <AvatarFallback className="bg-primary/15 text-base font-extrabold text-primary">
-            {name.charAt(0).toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
-        <div>
-          <h1 className="text-lg font-extrabold tracking-tight md:text-2xl">
-            Hola, {name}
-          </h1>
-          <p className="text-xs text-muted-foreground md:text-sm">
-            Semana {currentWeek} de {totalWeeks} · Plan de fuerza
-          </p>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <Avatar size="lg" className="border border-primary/40">
+            <AvatarFallback className="bg-primary/15 text-base font-extrabold text-primary">
+              {name.charAt(0).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <h1 className="text-lg font-extrabold tracking-tight md:text-2xl">
+              Hola, {name}
+            </h1>
+            <p className="text-xs text-muted-foreground md:text-sm">
+              Semana {currentWeek} de {totalWeeks} · Plan de fuerza
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <GeneratePlanButton />
+          <CompleteWeekButton />
         </div>
       </div>
       <div className="flex gap-2">
