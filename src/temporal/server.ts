@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { getTemporalClient } from "./client.ts";
 import { TASK_QUEUE, TEMPORAL_API_PORT, UI_ORIGIN } from "./shared.ts";
-import { sampleWorkflow } from "./workflows.ts";
+import { sampleWorkflow, weeklyProgressWorkflow } from "./workflows.ts";
 
 const app = new Hono();
 
@@ -28,6 +28,26 @@ app.post("/api/workflows/sample", async (c) => {
     return c.json({ workflowId, result });
   } catch (err) {
     console.error("[temporal api] sampleWorkflow failed", err);
+    return c.json(
+      { error: err instanceof Error ? err.message : "Unknown error" },
+      500,
+    );
+  }
+});
+
+app.post("/api/workflows/weekly-progress", async (c) => {
+  try {
+    const client = await getTemporalClient();
+    const workflowId = `weekly-progress-${Date.now()}`;
+    // execute() blocks until the workflow (archive + LLM analysis) finishes —
+    // the HTTP response carries the analysis back to the UI.
+    const result = await client.workflow.execute(weeklyProgressWorkflow, {
+      taskQueue: TASK_QUEUE,
+      workflowId,
+    });
+    return c.json({ workflowId, ...result });
+  } catch (err) {
+    console.error("[temporal api] weeklyProgressWorkflow failed", err);
     return c.json(
       { error: err instanceof Error ? err.message : "Unknown error" },
       500,

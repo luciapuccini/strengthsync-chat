@@ -11,7 +11,9 @@ import { config } from "dotenv";
 import { Eval } from "braintrust";
 import type { ModelMessage } from "ai";
 
-import { fetchAgentStaticText } from "../src/worker/agent/agent-core";
+import { fetchAgentStaticText } from "../src/agent/agent-core";
+import { SYSTEM_PROMPT } from "../src/worker/agent/system-propmt";
+import { buildTools } from "../src/worker/agent/tools/tools";
 import { toolChoiceScorer } from "./scorers/toolchoice";
 import { characteristicsScorer } from "./scorers/characteristics";
 import { containsNumberScorer } from "./scorers/containsNumber";
@@ -50,6 +52,8 @@ Eval<GoldenTestCase, AgentOutput, GoldenTestCase>("StrengthSync Agent", {
     const result = await fetchAgentStaticText({
       messages: buildMessages(testCase),
       apiKey: process.env.OPENAI_API_KEY,
+      system: SYSTEM_PROMPT,
+      tools: buildTools(),
     });
     return { text: result.text, toolCalls: result.toolCalls };
   },
