@@ -1,13 +1,22 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { getCurrentWeekProgress } from "../utils/getCurrentProgress";
 import { PageHeading } from "./components/PageHeading";
 import { Program } from "./components/Program";
 import { trackingReducer } from "./tracking/trackingReducer";
-
-const initialWeek = getCurrentWeekProgress();
+import {
+  loadTrackingDraft,
+  saveTrackingDraft,
+} from "./tracking/trackingStorage";
 
 export default function Plan() {
-  const [week, dispatch] = useReducer(trackingReducer, initialWeek);
+  const [week, dispatch] = useReducer(trackingReducer, null, () => {
+    const fileWeek = getCurrentWeekProgress();
+    return loadTrackingDraft(fileWeek) ?? fileWeek;
+  });
+
+  useEffect(() => {
+    saveTrackingDraft(week);
+  }, [week]);
 
   return (
     <div className="flex flex-col gap-4 md:gap-6">
