@@ -11,6 +11,7 @@
     "test:watch": "vitest",
     "preview": "pnpm run build && vite preview",
     "deploy": "pnpm run build && wrangler deploy",
+    "deploy:local": "trap 'kill 0' EXIT; pnpm run temporal:api & pnpm run temporal:worker & pnpm run dev",
     "eval": "dotenv -e .dev.vars -- braintrust eval evals/chat.eval.ts",
     "temporal:dev": "temporal server start-dev",
     "temporal:worker": "dotenv -e .dev.vars -- tsx watch src/temporal/worker.ts",

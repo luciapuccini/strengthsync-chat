@@ -14,4 +14,11 @@ export default defineConfig({
       "@": path.resolve(path.dirname(fileURLToPath(import.meta.url)), "./src/ui"),
     },
   },
+  // Bind on all interfaces so the phone can reach Vite over Tailscale (not just localhost).
+  // allowedHosts: Tailscale MagicDNS names (e.g. "mac") fail Vite's default host check.
+  server: {
+    host: true,
+    port: 5173,
+    allowedHosts: true,
+  },
 });
