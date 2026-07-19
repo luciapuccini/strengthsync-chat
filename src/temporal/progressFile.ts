@@ -1,7 +1,11 @@
-import { readdir } from "node:fs/promises";
+import { readFile, readdir, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { GeneratedProgram, ProgressWeek } from "./schemas.ts";
+import {
+  progressWeekSchema,
+  type GeneratedProgram,
+  type ProgressWeek,
+} from "./schemas.ts";
 
 // JSON files are the data store (discovery phase). Weekly progress lives only
 // under PROGRESS_DIR as progress_<datetimestamp>.json snapshots (newest =
@@ -101,4 +105,30 @@ export function buildWeek1Progress(
       completed: false,
     })),
   };
+}
+
+/** Pure merge: replace the day with matching id. Throws if dayId is missing. */
+export function mergeProgressDay(
+  week: ProgressWeek,
+  day: ProgressWeek["program"][number],
+): ProgressWeek {
+  const index = week.program.findIndex((d) => d.id === day.id);
+  if (index === -1) {
+    throw new Error(`Day id ${day.id} not found in current progress week`);
+  }
+  const program = [...week.program];
+  program[index] = day;
+  return { ...week, program };
+}
+
+/** Read newest progress file, merge day, validate, overwrite same file. */
+export async function updateProgressDay(
+  day: ProgressWeek["program"][number],
+): Promise<{ dayId: number; path: string }> {
+  const path = await resolveLatestProgressPath();
+  const raw = JSON.parse(await readFile(path, "utf8")) as unknown;
+  const week = progressWeekSchema.parse(raw);
+  const merged = progressWeekSchema.parse(mergeProgressDay(week, day));
+  await writeFile(path, `${JSON.stringify(merged, null, 2)}\n`);
+  return { dayId: day.id, path };
 }

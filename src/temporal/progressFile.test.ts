@@ -4,11 +4,12 @@ import {
   addDays,
   buildProgressFileName,
   buildWeek1Progress,
+  mergeProgressDay,
   nextMonday,
   resolveLatestProgressPath,
   toIsoDate,
 } from "./progressFile.ts";
-import type { GeneratedProgram } from "./schemas.ts";
+import type { GeneratedProgram, ProgressWeek } from "./schemas.ts";
 
 const sampleProgram: GeneratedProgram = {
   current_week: 1,
@@ -23,6 +24,40 @@ const sampleProgram: GeneratedProgram = {
     { id: 5, type: "cardio", routine: [] },
     { id: 6, type: "leg day", routine: [] },
     { id: 7, type: "rest", routine: [] },
+  ],
+};
+
+const sampleWeek: ProgressWeek = {
+  current_week: 2,
+  total_weeks: 6,
+  training_days_per_week: 4,
+  rest_days_per_week: 3,
+  start_date: "2026-07-27",
+  end_date: "2026-08-02",
+  finished: false,
+  program: [
+    {
+      id: 1,
+      type: "upper body",
+      date: "2026-07-27",
+      completed: false,
+      routine: [
+        {
+          name: "PRESS",
+          series: 3,
+          reps: 8,
+          rest_time: 90,
+          weight_kg: 30,
+        },
+      ],
+    },
+    {
+      id: 2,
+      type: "rest",
+      date: "2026-07-28",
+      completed: false,
+      routine: [],
+    },
   ],
 };
 
@@ -101,5 +136,39 @@ describe("buildWeek1Progress", () => {
 
   it("formats ISO dates as YYYY-MM-DD", () => {
     expect(toIsoDate(new Date("2026-07-20T00:00:00.000Z"))).toBe("2026-07-20");
+  });
+});
+
+describe("mergeProgressDay", () => {
+  it("replaces the matching day and keeps other days", () => {
+    const updated = {
+      ...sampleWeek.program[0]!,
+      completed: true,
+      routine: [
+        {
+          name: "PRESS",
+          series: 3,
+          reps: 8,
+          rest_time: 90,
+          weight_kg: 30,
+          performed_reps: [8, 8, 8],
+        },
+      ],
+    };
+    const merged = mergeProgressDay(sampleWeek, updated);
+    expect(merged.program[0]).toEqual(updated);
+    expect(merged.program[1]).toEqual(sampleWeek.program[1]);
+    expect(merged).not.toBe(sampleWeek);
+  });
+
+  it("throws when dayId is missing", () => {
+    expect(() =>
+      mergeProgressDay(sampleWeek, {
+        id: 99,
+        type: "rest",
+        completed: true,
+        routine: [],
+      }),
+    ).toThrow(/Day id 99 not found/);
   });
 });

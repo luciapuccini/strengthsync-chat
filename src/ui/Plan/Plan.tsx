@@ -1,19 +1,23 @@
-import { getCurrentProgram } from "../utils/getCurrentProgram";
+import { useReducer } from "react";
+import { getCurrentWeekProgress } from "../utils/getCurrentProgress";
 import { PageHeading } from "./components/PageHeading";
 import { Program } from "./components/Program";
+import { trackingReducer } from "./tracking/trackingReducer";
 
-const program = getCurrentProgram();
+const initialWeek = getCurrentWeekProgress();
 
 export default function Plan() {
+  const [week, dispatch] = useReducer(trackingReducer, initialWeek);
+
   return (
     <div className="flex flex-col gap-4 md:gap-6">
       <PageHeading
-        currentWeek={program.current_week}
-        totalWeeks={program.total_weeks}
-        trainingDays={program.training_days_per_week}
-        restDays={program.rest_days_per_week}
+        currentWeek={week.current_week}
+        totalWeeks={week.total_weeks}
+        trainingDays={week.training_days_per_week}
+        restDays={week.rest_days_per_week}
       />
-      <Program program={program} />
+      <Program week={week} dispatch={dispatch} />
     </div>
   );
 }

@@ -8,6 +8,7 @@ import Plan from "./Plan/Plan";
 export default function App() {
   return (
     <SidebarProvider
+      defaultOpen={false}
       style={
         {
           "--sidebar-width": "calc(var(--spacing) * 72)",

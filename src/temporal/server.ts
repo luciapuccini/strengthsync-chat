@@ -2,6 +2,8 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { getTemporalClient } from "./client.ts";
+import { updateProgressDay } from "./progressFile.ts";
+import { progressWeekSchema } from "./schemas.ts";
 import { TASK_QUEUE, TEMPORAL_API_PORT, UI_ORIGIN } from "./shared.ts";
 import {
   planGenerationWorkflow,
@@ -81,6 +83,28 @@ app.post("/api/workflows/plan-generation", async (c) => {
       { error: err instanceof Error ? err.message : "Unknown error" },
       500,
     );
+  }
+});
+
+app.post("/api/progress/day", async (c) => {
+  const body = await c.req.json<{ dayId?: number; day?: unknown }>().catch(() => ({}) as {
+    dayId?: number;
+    day?: unknown;
+  });
+
+  try {
+    const daySchema = progressWeekSchema.shape.program.element;
+    const day = daySchema.parse(body.day);
+    if (body.dayId !== undefined && body.dayId !== day.id) {
+      return c.json({ error: "dayId does not match day.id" }, 400);
+    }
+    const result = await updateProgressDay(day);
+    return c.json({ ok: true, dayId: result.dayId });
+  } catch (err) {
+    console.error("[temporal api] updateProgressDay failed", err);
+    const message = err instanceof Error ? err.message : "Unknown error";
+    const status = message.includes("not found") ? 404 : 400;
+    return c.json({ error: message }, status);
   }
 });
 

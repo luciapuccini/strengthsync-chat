@@ -20,3 +20,18 @@ export function getCurrentProgress(): CombinedProgress {
 
   return { weeks };
 }
+
+/** In-flight progress week for the gym tracker (unfinished, highest week). */
+export function getCurrentWeekProgress(
+  weeks: StrengthProgramStructure[] = getCurrentProgress().weeks,
+): StrengthProgramStructure {
+  if (weeks.length === 0) {
+    throw new Error("No progress weeks available");
+  }
+
+  const unfinished = weeks.filter((w) => w.finished !== true);
+  const candidates = unfinished.length > 0 ? unfinished : weeks;
+  return candidates.reduce((best, week) =>
+    week.current_week >= best.current_week ? week : best,
+  );
+}
