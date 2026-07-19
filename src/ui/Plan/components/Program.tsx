@@ -10,6 +10,7 @@ import type {
   StrengthProgramStructure,
   WeightExcersise,
 } from "../../../types/types";
+import { TEMPORAL_API_URL } from "@/api/temporalApi";
 import { parsePlanToMd } from "@/utils/parsePlanToMd";
 import {
   isExerciseComplete,
@@ -17,9 +18,6 @@ import {
   remainingSets,
   type TrackingAction,
 } from "../tracking/trackingReducer";
-
-const TEMPORAL_API_URL =
-  import.meta.env.VITE_TEMPORAL_API_URL ?? "http://localhost:3001";
 
 const dayTypeLabels: Record<string, string> = {
   "upper body": "Tren superior",

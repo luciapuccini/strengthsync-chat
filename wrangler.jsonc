@@ -4,7 +4,13 @@
     "main": "./src/worker/index.ts",
     "compatibility_date": "2026-07-11",
     "compatibility_flags": ["nodejs_compat"],
-    
+
+    "assets": {
+      "not_found_handling": "single-page-application",
+      // Explicit agent routes so SPA deep links work on Tailscale/LAN HTTP hosts
+      // (browsers omit Sec-Fetch-Mode: navigate there; see workers-sdk#9109).
+      "run_worker_first": ["/agents/*"]
+    },
 
     "durable_objects": {
       "bindings": [{ "name": "StrengthSyncAgent", "class_name": "StrengthSyncAgent" }],

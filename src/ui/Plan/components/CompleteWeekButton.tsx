@@ -9,10 +9,8 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/shadcn/ui/sheet";
+import { TEMPORAL_API_URL } from "@/api/temporalApi";
 import MarkdownRenderer from "@/ChatPanel/chat/MarkdownRenderer";
-
-const TEMPORAL_API_URL =
-  import.meta.env.VITE_TEMPORAL_API_URL ?? "http://localhost:3001";
 
 interface WeeklyProgressResponse {
   workflowId?: string;

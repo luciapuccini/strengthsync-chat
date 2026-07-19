@@ -132,3 +132,28 @@ export async function updateProgressDay(
   await writeFile(path, `${JSON.stringify(merged, null, 2)}\n`);
   return { dayId: day.id, path };
 }
+
+/** Finished progress weeks for history charts, oldest first. */
+export async function listFinishedProgressWeeks(): Promise<ProgressWeek[]> {
+  const files = (await readdir(PROGRESS_DIR))
+    .filter((f) => f.startsWith("progress_") && f.endsWith(".json"))
+    .sort();
+
+  const weeks: ProgressWeek[] = [];
+  for (const file of files) {
+    const raw = JSON.parse(
+      await readFile(join(PROGRESS_DIR, file), "utf8"),
+    ) as unknown;
+    const week = progressWeekSchema.parse(raw);
+    if (week.finished === true) {
+      weeks.push(week);
+    }
+  }
+
+  weeks.sort((a, b) => {
+    const byDate = a.start_date.localeCompare(b.start_date);
+    return byDate !== 0 ? byDate : a.current_week - b.current_week;
+  });
+
+  return weeks;
+}

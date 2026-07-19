@@ -2,9 +2,12 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { getTemporalClient } from "./client.ts";
-import { updateProgressDay } from "./progressFile.ts";
+import {
+  listFinishedProgressWeeks,
+  updateProgressDay,
+} from "./progressFile.ts";
 import { progressWeekSchema } from "./schemas.ts";
-import { TASK_QUEUE, TEMPORAL_API_PORT, UI_ORIGIN } from "./shared.ts";
+import { TASK_QUEUE, TEMPORAL_API_PORT, UI_ORIGINS } from "./shared.ts";
 import {
   planGenerationWorkflow,
   sampleWorkflow,
@@ -13,9 +16,26 @@ import {
 
 const app = new Hono();
 
-app.use("*", cors({ origin: UI_ORIGIN }));
-
+app.use(
+  "*",
+  cors({
+    origin: (origin) => (UI_ORIGINS.includes(origin) ? origin : null),
+  }),
+);
 app.get("/health", (c) => c.json({ ok: true }));
+
+app.get("/api/progress/history", async (c) => {
+  try {
+    const weeks = await listFinishedProgressWeeks();
+    return c.json({ weeks });
+  } catch (err) {
+    console.error("[temporal api] listFinishedProgressWeeks failed", err);
+    return c.json(
+      { error: err instanceof Error ? err.message : "Unknown error" },
+      500,
+    );
+  }
+});
 
 app.post("/api/workflows/sample", async (c) => {
   const body = await c.req.json<{ name?: string }>().catch(() => ({}) as { name?: string });
@@ -110,4 +130,5 @@ app.post("/api/progress/day", async (c) => {
 
 serve({ fetch: app.fetch, port: TEMPORAL_API_PORT }, (info) => {
   console.log(`[temporal api] listening on http://localhost:${info.port}`);
+  console.log(`[temporal api] CORS origins: ${UI_ORIGINS.join(", ")}`);
 });

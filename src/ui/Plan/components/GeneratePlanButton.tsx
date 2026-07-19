@@ -12,10 +12,8 @@ import {
   DialogTrigger,
 } from "@/shadcn/ui/dialog";
 import { Textarea } from "@/shadcn/ui/textarea";
+import { TEMPORAL_API_URL } from "@/api/temporalApi";
 import MarkdownRenderer from "@/ChatPanel/chat/MarkdownRenderer";
-
-const TEMPORAL_API_URL =
-  import.meta.env.VITE_TEMPORAL_API_URL ?? "http://localhost:3001";
 
 interface PlanGenerationResponse {
   workflowId?: string;

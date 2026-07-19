@@ -10,12 +10,14 @@ TEMPORAL_ADDRESS=
 TEMPORAL_NAMESPACE=
 TEMPORAL_API_KEY=
 
-# CORS for the Temporal Hono API (`pnpm temporal:api`). Must match the origin you
-# open in the browser (scheme + host + port). For Tailscale gym access, use the
-# Mac MagicDNS name or Tailscale IP, e.g. http://strengthsync.tailXXXX.ts.net:5173
-# UI_ORIGIN=http://localhost:5173
+# CORS for the Temporal Hono API (`pnpm temporal:api`). Must match the browser
+# Origin exactly (scheme + host + port). Comma-separated for dual access:
+#   UI_ORIGIN=http://localhost:5173,http://mac:5173
+# Bare hosts without http:// will be normalized, but prefer the full origin.
+UI_ORIGIN=http://localhost:5173
 
 # Client-side Temporal API base URL is NOT read from this file. Put it in
-# `.env.local` (Vite) instead, e.g.:
-#   VITE_TEMPORAL_API_URL=http://strengthsync.tailXXXX.ts.net:3001
+# `.env.local` (Vite) instead — and match the host you open in the browser:
+#   VITE_TEMPORAL_API_URL=http://localhost:3001
+#   VITE_TEMPORAL_API_URL=http://mac:3001
 # Restart `pnpm dev` after changing any VITE_* value.

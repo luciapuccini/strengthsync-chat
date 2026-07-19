@@ -4,6 +4,7 @@ import {
   addDays,
   buildProgressFileName,
   buildWeek1Progress,
+  listFinishedProgressWeeks,
   mergeProgressDay,
   nextMonday,
   resolveLatestProgressPath,
@@ -80,6 +81,16 @@ describe("resolveLatestProgressPath", () => {
   it("returns the newest progress file by filename timestamp", async () => {
     const path = await resolveLatestProgressPath();
     expect(basename(path)).toMatch(/^progress_.+\.json$/);
+  });
+});
+
+describe("listFinishedProgressWeeks", () => {
+  it("returns only finished weeks sorted by start_date", async () => {
+    const weeks = await listFinishedProgressWeeks();
+    expect(weeks.length).toBeGreaterThan(0);
+    expect(weeks.every((w) => w.finished === true)).toBe(true);
+    const dates = weeks.map((w) => w.start_date);
+    expect(dates).toEqual([...dates].sort());
   });
 });
 
