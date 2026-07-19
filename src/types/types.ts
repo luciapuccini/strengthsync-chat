@@ -9,6 +9,8 @@ type StrengthProgramStructure = {
   total_weeks: number;
   training_days_per_week: number;
   rest_days_per_week: number;
+  /** Set true when the weekly archive workflow marks this week complete. */
+  finished?: boolean;
   program: ExcersiseDay[];
 };
 

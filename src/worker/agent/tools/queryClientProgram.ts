@@ -1,6 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
-import ClientProgram from "../../../app/dashboard/program.json";
+import { getCurrentProgram } from "../../../ui/utils/getCurrentProgram";
 
 export function queryClientProgram() {
   return tool({
@@ -16,7 +16,7 @@ export function queryClientProgram() {
     execute: async ({ userInput }) => {
       console.log("🚀 ~ CALL client Program:", userInput);
       try {
-        const data = ClientProgram;
+        const data = getCurrentProgram();
         return {
           userInput,
           data,

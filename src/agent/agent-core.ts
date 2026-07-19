@@ -73,7 +73,7 @@ interface AgentObjectArgs<T extends z.ZodType> {
 }
 
 // Structured-output variant. Used when the result must be machine-readable
-// (e.g. the plan-generation workflow produces the new program.json).
+// (e.g. the plan-generation workflow produces a new program_<timestamp>.json).
 export async function fetchAgentObject<T extends z.ZodType>({
   messages,
   apiKey,

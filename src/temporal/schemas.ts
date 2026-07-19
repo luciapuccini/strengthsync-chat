@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-// Zod mirror of program.json's shape — used (a) to validate the plan-generation
-// LLM's structured output and (b) as a drift guard against the real data files
+// Zod mirror of the program / progress file shapes — used (a) to validate
+// LLM structured output and (b) as drift guards against real data files
 // (see schemas.test.ts). src/types/types.ts holds the UI's TS-only equivalent.
 
 const exerciseSchema = z.object({
@@ -53,3 +53,57 @@ export const generatedPlanSchema = programSchema.extend({
 
 export type GeneratedProgram = z.infer<typeof programSchema>;
 export type GeneratedPlan = z.infer<typeof generatedPlanSchema>;
+
+// ── Progress week (weekly archive / next-week generation) ───────────────────
+
+const progressExerciseSchema = exerciseSchema.extend({
+  performed_reps: z.array(z.number().int()).optional(),
+});
+
+const progressDaySchema = daySchema.extend({
+  date: z.string().optional(),
+  completed: z.boolean().optional(),
+  routine: z.array(progressExerciseSchema),
+});
+
+// On-disk progress_<timestamp>.json shape (finished weeks may include
+// performed_reps; in-flight weeks have finished: false / omitted).
+export const progressWeekSchema = z.object({
+  current_week: z.number().int(),
+  total_weeks: z.number().int(),
+  training_days_per_week: z.number().int(),
+  rest_days_per_week: z.number().int(),
+  start_date: z.string(),
+  end_date: z.string(),
+  finished: z.boolean().optional(),
+  program: z.array(progressDaySchema),
+});
+
+const llmProgressExerciseSchema = exerciseSchema.extend({
+  notes: z.string().nullable(),
+  weight_kg: z.number().nullable(),
+});
+
+const llmProgressDaySchema = z.object({
+  id: z.number().int(),
+  type: z.enum(["upper body", "leg day", "rest", "swimming", "cardio"]),
+  date: z.string(),
+  completed: z.boolean(),
+  notes: z.string().nullable(),
+  routine: z.array(llmProgressExerciseSchema),
+});
+
+// LLM output for the upcoming week template (no performed_reps).
+export const generatedProgressWeekSchema = z.object({
+  current_week: z.number().int(),
+  total_weeks: z.number().int(),
+  training_days_per_week: z.number().int(),
+  rest_days_per_week: z.number().int(),
+  start_date: z.string(),
+  end_date: z.string(),
+  finished: z.boolean(),
+  program: z.array(llmProgressDaySchema),
+});
+
+export type ProgressWeek = z.infer<typeof progressWeekSchema>;
+export type GeneratedProgressWeek = z.infer<typeof generatedProgressWeekSchema>;

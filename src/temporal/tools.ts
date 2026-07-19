@@ -2,7 +2,11 @@ import { readFile, readdir } from "node:fs/promises";
 import { basename, join } from "node:path";
 import { tool } from "ai";
 import { z } from "zod";
-import { PROGRAM_FILE, PROGRESS_DIR } from "./progressFile.ts";
+import {
+  PROGRESS_DIR,
+  resolveCurrentProgramPath,
+  TRAINING_RULES_FILE,
+} from "./progressFile.ts";
 
 async function readJsonFile(path: string): Promise<unknown> {
   return JSON.parse(await readFile(path, "utf8"));
@@ -18,7 +22,7 @@ export function buildAnalysisTools() {
       inputSchema: z.object({}),
       execute: async () => {
         try {
-          return await readJsonFile(PROGRAM_FILE);
+          return await readJsonFile(await resolveCurrentProgramPath());
         } catch (err) {
           return { error: `Could not read program: ${errMessage(err)}` };
         }
@@ -56,6 +60,20 @@ export function buildAnalysisTools() {
           return { files };
         } catch (err) {
           return { error: `Could not list progress files: ${errMessage(err)}` };
+        }
+      },
+    }),
+    getTrainingRules: tool({
+      description:
+        "Read the StrengthSync coaching rules (progression, nutrition, fatigue, rest-day prescriptions).",
+      inputSchema: z.object({}),
+      execute: async () => {
+        try {
+          return { rules: await readFile(TRAINING_RULES_FILE, "utf8") };
+        } catch (err) {
+          return {
+            error: `Could not read training rules: ${errMessage(err)}`,
+          };
         }
       },
     }),

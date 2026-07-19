@@ -3,6 +3,9 @@
   "total_weeks": 6,
   "training_days_per_week": 4,
   "rest_days_per_week": 3,
+  "start_date": "2026-07-20",
+  "end_date": "2026-07-26",
+  "finished": true,
   "program": [
     {
       "id": 1,
@@ -11,23 +14,23 @@
         {
           "name": "PRES BANCA PLANO",
           "series": 4,
-          "reps": 10,
+          "reps": 8,
           "rest_time": 90,
-          "weight_kg": 28
+          "weight_kg": 30
         },
         {
           "name": "JALÓN AL PECHO",
           "series": 4,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 30
+          "weight_kg": 31
         },
         {
           "name": "REMO GIRONDA",
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 28
+          "weight_kg": 29
         },
         {
           "name": "PRES HOMBRO BARRA BAJA",
@@ -41,14 +44,14 @@
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 6
+          "weight_kg": 7
         },
         {
           "name": "EXTENSIÓN TRICEPS POLEA",
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 7.5
+          "weight_kg": 8.5
         },
         {
           "name": "FLEXIONES",
@@ -57,7 +60,9 @@
           "rest_time": 90,
           "notes": "CON GOMA"
         }
-      ]
+      ],
+      "date": "2026-07-20",
+      "completed": false
     },
     {
       "id": 2,
@@ -68,14 +73,14 @@
           "series": 3,
           "reps": 10,
           "rest_time": 90,
-          "weight_kg": 30
+          "weight_kg": 31
         },
         {
           "name": "PESO MUERTO",
           "series": 4,
           "reps": 10,
           "rest_time": 90,
-          "weight_kg": 45
+          "weight_kg": 46
         },
         {
           "name": "ZANCADAS",
@@ -89,14 +94,14 @@
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 10
+          "weight_kg": 11
         },
         {
           "name": "EXTENSIÓN CUÁDRICEPS",
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 27.5
+          "weight_kg": 28.5
         },
         {
           "name": "LEG CURL",
@@ -105,13 +110,17 @@
           "rest_time": 90,
           "weight_kg": 30
         }
-      ]
+      ],
+      "date": "2026-07-21",
+      "completed": false
     },
     {
       "id": 3,
       "type": "swimming",
-      "notes": "Natación técnica + pirámide. Mantener SWOLF ≤53, ritmo medio progresivo y FC controlada. Si hay fatiga, priorizar calidad sobre volumen.",
-      "routine": []
+      "notes": "Natación técnica + pirámide. Mantener SWOLF ≤53, ritmo medio progresivo y FC controlada. Si aparece fatiga, priorizar calidad sobre volumen.",
+      "routine": [],
+      "date": "2026-07-22",
+      "completed": false
     },
     {
       "id": 4,
@@ -129,7 +138,7 @@
           "series": 4,
           "reps": 10,
           "rest_time": 90,
-          "weight_kg": 28
+          "weight_kg": 29
         },
         {
           "name": "ELEVACIÓN LATERAL",
@@ -149,22 +158,26 @@
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 7.5
+          "weight_kg": 8
         },
         {
           "name": "FACE PULL",
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 7.5
+          "weight_kg": 8
         }
-      ]
+      ],
+      "date": "2026-07-23",
+      "completed": false
     },
     {
       "id": 5,
       "type": "swimming",
       "notes": "Natación endurance 2000 m. Mantener FC ≤125 bpm y buscar eficiencia técnica. Buena opción de descarga activa.",
-      "routine": []
+      "routine": [],
+      "date": "2026-07-24",
+      "completed": false
     },
     {
       "id": 6,
@@ -173,30 +186,30 @@
         {
           "name": "SENTADILLA",
           "series": 4,
-          "reps": 10,
+          "reps": 8,
           "rest_time": 90,
-          "weight_kg": 42.5
+          "weight_kg": 43.5
         },
         {
           "name": "PESO MUERTO",
           "series": 4,
           "reps": 10,
           "rest_time": 90,
-          "weight_kg": 45
+          "weight_kg": 46
         },
         {
           "name": "SUMO",
           "series": 3,
           "reps": 8,
           "rest_time": 90,
-          "weight_kg": 50
+          "weight_kg": 51
         },
         {
           "name": "HIPTHRUST",
           "series": 3,
           "reps": 10,
           "rest_time": 90,
-          "weight_kg": 40
+          "weight_kg": 41
         },
         {
           "name": "PATADA DE GRUTEO",
@@ -216,15 +229,19 @@
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 27.5
+          "weight_kg": 28.5
         }
-      ]
+      ],
+      "date": "2026-07-25",
+      "completed": false
     },
     {
       "id": 7,
       "type": "rest",
       "notes": "Descanso activo: objetivo 10k pasos + movilidad suave. Si apetece, añadir 20-30 min de cardio muy suave o caminar; prioridad recuperar para la siguiente semana.",
-      "routine": []
+      "routine": [],
+      "date": "2026-07-26",
+      "completed": false
     }
   ]
 }

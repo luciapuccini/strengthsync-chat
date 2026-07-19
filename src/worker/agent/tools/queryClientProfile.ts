@@ -1,6 +1,7 @@
 import { tool } from "ai";
 import { z } from "zod";
-import ClientProfile from "../../../app/client_profile.json";
+
+import clientProfileFile from "../../../app/dashboard/client/client_profile.json";
 
 export function queryClientProfile() {
   return tool({
@@ -16,7 +17,7 @@ export function queryClientProfile() {
     execute: async ({ userInput }) => {
       console.log("🚀 ~ CALL clietn profile:", userInput);
       try {
-        const data = ClientProfile;
+        const data = clientProfileFile;
         return {
           userInput,
           data,

@@ -1,6 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
-import ClientProgress from "../../../app/dashboard/progress.json";
+import { getCurrentProgress } from "../../../ui/utils/getCurrentProgress";
 
 export function queryClientProgress() {
   return tool({
@@ -16,7 +16,7 @@ export function queryClientProgress() {
     execute: async ({ userInput }) => {
       console.log("🚀 ~ CALL client progress:", userInput);
       try {
-        const data = ClientProgress;
+        const data = getCurrentProgress();
         return {
           userInput,
           data,

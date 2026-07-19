@@ -1,11 +1,25 @@
-import { readFileSync } from "node:fs";
+import { readFile } from "node:fs/promises";
 import { describe, expect, it } from "vitest";
-import { PROGRAM_FILE } from "./progressFile.ts";
-import { programSchema } from "./schemas.ts";
+import {
+  resolveCurrentProgramPath,
+  resolveLatestProgressPath,
+} from "./progressFile.ts";
+import { programSchema, progressWeekSchema } from "./schemas.ts";
 
 describe("programSchema", () => {
-  it("parses the active program.json (drift guard)", () => {
-    const raw = JSON.parse(readFileSync(PROGRAM_FILE, "utf8"));
+  it("parses the active program file (drift guard)", async () => {
+    const raw = JSON.parse(
+      await readFile(await resolveCurrentProgramPath(), "utf8"),
+    );
     expect(() => programSchema.parse(raw)).not.toThrow();
+  });
+});
+
+describe("progressWeekSchema", () => {
+  it("parses the latest progress file (drift guard)", async () => {
+    const raw = JSON.parse(
+      await readFile(await resolveLatestProgressPath(), "utf8"),
+    );
+    expect(() => progressWeekSchema.parse(raw)).not.toThrow();
   });
 });

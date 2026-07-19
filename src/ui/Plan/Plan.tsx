@@ -1,9 +1,8 @@
-import programData from "../../app/dashboard/program.json";
+import { getCurrentProgram } from "../utils/getCurrentProgram";
 import { PageHeading } from "./components/PageHeading";
 import { Program } from "./components/Program";
-import type { StrengthProgramStructure } from "../../types/types";
 
-const program = programData as StrengthProgramStructure;
+const program = getCurrentProgram();
 
 export default function Plan() {
   return (

@@ -11,23 +11,23 @@
         {
           "name": "PRES BANCA PLANO",
           "series": 4,
-          "reps": 10,
+          "reps": 8,
           "rest_time": 90,
-          "weight_kg": 28
+          "weight_kg": 30
         },
         {
           "name": "JALÓN AL PECHO",
           "series": 4,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 30
+          "weight_kg": 31
         },
         {
           "name": "REMO GIRONDA",
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 28
+          "weight_kg": 29
         },
         {
           "name": "PRES HOMBRO BARRA BAJA",
@@ -41,14 +41,14 @@
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 6
+          "weight_kg": 7
         },
         {
           "name": "EXTENSIÓN TRICEPS POLEA",
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 7.5
+          "weight_kg": 8.5
         },
         {
           "name": "FLEXIONES",
@@ -68,49 +68,49 @@
           "series": 3,
           "reps": 10,
           "rest_time": 90,
-          "weight_kg": 30
+          "weight_kg": 31
         },
         {
           "name": "PESO MUERTO",
           "series": 4,
           "reps": 10,
           "rest_time": 90,
-          "weight_kg": 45
+          "weight_kg": 46
         },
         {
           "name": "ZANCADAS",
           "series": 4,
           "reps": 15,
           "rest_time": 90,
-          "weight_kg": 15
+          "weight_kg": 20
         },
         {
           "name": "HIPEREXTENSIÓN",
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 10
+          "weight_kg": 11
         },
         {
           "name": "EXTENSIÓN CUÁDRICEPS",
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 27.5
+          "weight_kg": 28.5
         },
         {
           "name": "LEG CURL",
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 27.5
+          "weight_kg": 30
         }
       ]
     },
     {
       "id": 3,
       "type": "swimming",
-      "notes": "Natación técnica + pirámide. Mantener SWOLF ≤53, ritmo medio progresivo y FC controlada. Si hay fatiga, priorizar calidad sobre volumen.",
+      "notes": "Natación técnica + pirámide. Mantener SWOLF ≤53, ritmo medio progresivo y FC controlada. Si aparece fatiga, priorizar calidad sobre volumen.",
       "routine": []
     },
     {
@@ -129,7 +129,7 @@
           "series": 4,
           "reps": 10,
           "rest_time": 90,
-          "weight_kg": 28
+          "weight_kg": 29
         },
         {
           "name": "ELEVACIÓN LATERAL",
@@ -149,14 +149,14 @@
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 7.5
+          "weight_kg": 8
         },
         {
           "name": "FACE PULL",
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 7.5
+          "weight_kg": 8
         }
       ]
     },
@@ -173,30 +173,30 @@
         {
           "name": "SENTADILLA",
           "series": 4,
-          "reps": 10,
+          "reps": 8,
           "rest_time": 90,
-          "weight_kg": 42.5
+          "weight_kg": 43.5
         },
         {
           "name": "PESO MUERTO",
           "series": 4,
           "reps": 10,
           "rest_time": 90,
-          "weight_kg": 45
+          "weight_kg": 46
         },
         {
           "name": "SUMO",
           "series": 3,
           "reps": 8,
           "rest_time": 90,
-          "weight_kg": 50
+          "weight_kg": 51
         },
         {
           "name": "HIPTHRUST",
           "series": 3,
           "reps": 10,
           "rest_time": 90,
-          "weight_kg": 40
+          "weight_kg": 41
         },
         {
           "name": "PATADA DE GRUTEO",
@@ -216,7 +216,7 @@
           "series": 3,
           "reps": 12,
           "rest_time": 90,
-          "weight_kg": 27.5
+          "weight_kg": 28.5
         }
       ]
     },

@@ -1,20 +1,20 @@
-import { copyFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { mkdir, readFile, readdir, unlink, writeFile } from "node:fs/promises";
+import { basename, join } from "node:path";
 import type { ModelMessage } from "ai";
 import { fetchAgentObject, fetchAgentStaticText } from "../agent/agent-core.ts";
 import {
-  addDays,
   buildProgramFileName,
   buildProgressFileName,
+  buildWeek1Progress,
   CLIENT_PROFILE_FILE,
-  nextMonday,
   PROGRAM_DIR,
-  PROGRAM_FILE,
   PROGRESS_DIR,
-  PROGRESS_FILE,
+  resolveCurrentProgramPath,
+  resolveLatestProgressPath,
   TRAINING_RULES_FILE,
 } from "./progressFile.ts";
 import {
+  NEXT_WEEK_PROGRESS_PROMPT,
   PLAN_GENERATION_SYSTEM_PROMPT,
   PROFILE_SUMMARY_PROMPT,
   PROGRESS_SUMMARY_PROMPT,
@@ -22,7 +22,9 @@ import {
 } from "./prompts.ts";
 import {
   generatedPlanSchema,
+  generatedProgressWeekSchema,
   type GeneratedProgram,
+  type ProgressWeek,
 } from "./schemas.ts";
 import { buildAnalysisTools } from "./tools.ts";
 
@@ -50,19 +52,22 @@ export interface ArchiveResult {
   totalWeeks: number;
 }
 
-// Snapshots the in-flight week (src/app/dashboard/progress.json) into
-// PROGRESS_DIR as progress_<datetimestamp>.json. The working file stays
-// untouched — regenerating next week's template is roadmap 4.2 (deferred).
+// Marks the newest progress_<datetimestamp>.json as finished (no new file).
 export async function archiveWeeklyProgress(): Promise<ArchiveResult> {
-  const progress = JSON.parse(await readFile(PROGRESS_FILE, "utf8")) as {
+  const path = await resolveLatestProgressPath();
+  const progress = JSON.parse(await readFile(path, "utf8")) as {
     current_week: number;
     total_weeks: number;
+    finished?: boolean;
   };
 
-  const fileName = buildProgressFileName(new Date());
-  await mkdir(PROGRESS_DIR, { recursive: true });
-  await copyFile(PROGRESS_FILE, join(PROGRESS_DIR, fileName));
-  console.log(`[temporal activity] archived week ${progress.current_week} → ${fileName}`);
+  progress.finished = true;
+  await writeFile(path, `${JSON.stringify(progress, null, 2)}\n`);
+
+  const fileName = basename(path);
+  console.log(
+    `[temporal activity] marked week ${progress.current_week} finished → ${fileName}`,
+  );
 
   return {
     fileName,
@@ -89,7 +94,7 @@ export async function analyzeWeeklyProgress({
   const messages: ModelMessage[] = [
     {
       role: "user",
-      content: `Analyze week ${week}. The archived progress file is "${fileName}" — read it with getProgressFile, then compare it against the plan with getCurrentProgram.`,
+      content: `Analyze week ${week}. The archived progress file is "${fileName}" — read it with getProgressFile, compare it against the plan with getCurrentProgram, and read coaching rules with getTrainingRules before writing Accionables.`,
     },
   ];
 
@@ -98,10 +103,93 @@ export async function analyzeWeeklyProgress({
     apiKey: requireOpenAiKey(),
     system: WEEKLY_ANALYSIS_SYSTEM_PROMPT,
     tools: buildAnalysisTools(),
-    maxSteps: 6,
+    maxSteps: 8,
   });
 
   return { analysis: result.text };
+}
+
+export interface GenerateNextWeekArgs {
+  fileName: string;
+  week: number;
+  analysis: string;
+}
+
+export interface GenerateNextWeekResult {
+  nextFileName: string;
+}
+
+// LLM structured output: next week's progress_<timestamp>.json (roadmap 4.2).
+export async function generateNextWeekProgress({
+  fileName,
+  week,
+  analysis,
+}: GenerateNextWeekArgs): Promise<GenerateNextWeekResult> {
+  const rules = await readFile(TRAINING_RULES_FILE, "utf8");
+  const finishedWeek = await readFile(
+    join(PROGRESS_DIR, basename(fileName)),
+    "utf8",
+  );
+  const currentProgram = await readFile(
+    await resolveCurrentProgramPath(),
+    "utf8",
+  );
+
+  const messages: ModelMessage[] = [
+    {
+      role: "user",
+      content: [
+        `## Finished week ${week} progress\n${finishedWeek}`,
+        `## Active program template\n${currentProgram}`,
+        `## Weekly analysis\n${analysis}`,
+        `Write week ${week + 1} progress JSON now.`,
+      ].join("\n\n"),
+    },
+  ];
+
+  const { object } = await fetchAgentObject({
+    messages,
+    apiKey: requireOpenAiKey(),
+    system: `${NEXT_WEEK_PROGRESS_PROMPT}\n\n${rules}`,
+    schema: generatedProgressWeekSchema,
+  });
+
+  const progress: ProgressWeek = {
+    current_week: object.current_week,
+    total_weeks: object.total_weeks,
+    training_days_per_week: object.training_days_per_week,
+    rest_days_per_week: object.rest_days_per_week,
+    start_date: object.start_date,
+    end_date: object.end_date,
+    finished: false,
+    program: object.program.map((day) => {
+      const { notes: dayNotes, routine, ...dayRest } = day;
+      return {
+        ...dayRest,
+        completed: false,
+        ...(dayNotes != null ? { notes: dayNotes } : {}),
+        routine: routine.map((ex) => {
+          const { notes, weight_kg, ...exRest } = ex;
+          return {
+            ...exRest,
+            ...(notes != null ? { notes } : {}),
+            ...(weight_kg != null ? { weight_kg } : {}),
+          };
+        }),
+      };
+    }),
+  };
+
+  const nextFileName = buildProgressFileName(new Date());
+  await mkdir(PROGRESS_DIR, { recursive: true });
+  await writeFile(
+    join(PROGRESS_DIR, nextFileName),
+    `${JSON.stringify(progress, null, 2)}\n`,
+  );
+  console.log(
+    `[temporal activity] seeded next week ${progress.current_week} → ${nextFileName}`,
+  );
+  return { nextFileName };
 }
 
 // ── Plan generation (roadmap "End of plan") ─────────────────────────────────
@@ -110,9 +198,9 @@ export interface SummaryResult {
   summary: string;
 }
 
-// LLM call 1: condenses every archived week (+ the in-flight week) of the
-// finished block into coach-facing trends. Files are small and bounded, so
-// they're inlined into the prompt — no tool loop needed.
+// LLM call 1: condenses every archived week of the finished block into
+// coach-facing trends. Files are small and bounded, so they're inlined into
+// the prompt — no tool loop needed.
 export async function summarizeProgressHistory(): Promise<SummaryResult> {
   const files = (await readdir(PROGRESS_DIR))
     .filter((f) => f.startsWith("progress_") && f.endsWith(".json"))
@@ -122,9 +210,6 @@ export async function summarizeProgressHistory(): Promise<SummaryResult> {
   for (const f of files) {
     weeks.push(`### ${f}\n${await readFile(join(PROGRESS_DIR, f), "utf8")}`);
   }
-  weeks.push(
-    `### in-flight week (progress.json)\n${await readFile(PROGRESS_FILE, "utf8")}`,
-  );
 
   const messages: ModelMessage[] = [
     {
@@ -181,7 +266,10 @@ export async function generateNewPlan({
   quizNotes,
 }: GeneratePlanArgs): Promise<GeneratePlanResult> {
   const rules = await readFile(TRAINING_RULES_FILE, "utf8");
-  const currentProgram = await readFile(PROGRAM_FILE, "utf8");
+  const currentProgram = await readFile(
+    await resolveCurrentProgramPath(),
+    "utf8",
+  );
 
   const messages: ModelMessage[] = [
     {
@@ -235,8 +323,8 @@ export interface ActivateResult {
   programFileName: string;
 }
 
-// Archives the generated plan (program/program_<datetimestamp>.json, same
-// approach as progress files) and activates it as the live program.json.
+// Archives the generated plan as program/program_<datetimestamp>.json and
+// deletes older program_*.json so only the active template remains.
 export async function activateNewProgram({
   program,
 }: ActivateArgs): Promise<ActivateResult> {
@@ -244,8 +332,18 @@ export async function activateNewProgram({
   const serialized = `${JSON.stringify(program, null, 2)}\n`;
   await mkdir(PROGRAM_DIR, { recursive: true });
   await writeFile(join(PROGRAM_DIR, programFileName), serialized);
-  await writeFile(PROGRAM_FILE, serialized);
-  console.log(`[temporal activity] activated new program → ${programFileName}`);
+
+  const stale = (await readdir(PROGRAM_DIR)).filter(
+    (f) =>
+      f.startsWith("program_") &&
+      f.endsWith(".json") &&
+      f !== programFileName,
+  );
+  await Promise.all(stale.map((f) => unlink(join(PROGRAM_DIR, f))));
+  console.log(
+    `[temporal activity] activated new program → ${programFileName}` +
+      (stale.length > 0 ? ` (removed ${stale.length} older archive(s))` : ""),
+  );
   return { programFileName };
 }
 
@@ -253,35 +351,37 @@ export interface ResetProgressArgs {
   program: GeneratedProgram;
 }
 
-// Fresh week 1 for the new block: archives the outgoing in-flight week first
-// (never lose data), then writes a clean progress.json — sequential dates from
-// next Monday, completed flags false, weights taken from the generated plan.
+export interface ResetProgressResult {
+  progressFileName: string;
+}
+
+// End-of-plan housekeeping: wipe archived progress_<datetimestamp>.json files,
+// then seed week 1 of the new plan so weeklyProgressWorkflow has a current week.
 export async function resetProgressForNewPlan({
   program,
-}: ResetProgressArgs): Promise<void> {
-  await mkdir(PROGRESS_DIR, { recursive: true });
-  await copyFile(
-    PROGRESS_FILE,
-    join(PROGRESS_DIR, buildProgressFileName(new Date())),
-  );
+}: ResetProgressArgs): Promise<ResetProgressResult> {
+  let files: string[] = [];
+  try {
+    files = (await readdir(PROGRESS_DIR)).filter(
+      (f) => f.startsWith("progress_") && f.endsWith(".json"),
+    );
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code !== "ENOENT") {
+      throw err;
+    }
+  }
 
-  const monday = nextMonday(new Date());
-  const fresh = {
-    current_week: 1,
-    total_weeks: program.total_weeks,
-    training_days_per_week: program.training_days_per_week,
-    rest_days_per_week: program.rest_days_per_week,
-    program: program.program.map((day, i) => ({
-      id: day.id,
-      type: day.type,
-      date: addDays(monday, i).toISOString().slice(0, 10),
-      completed: false,
-      ...(day.notes ? { notes: day.notes } : {}),
-      routine: day.routine,
-    })),
-  };
-  await writeFile(PROGRESS_FILE, `${JSON.stringify(fresh, null, 2)}\n`);
-  console.log(
-    `[temporal activity] reset progress.json to week 1 (starts ${monday.toISOString().slice(0, 10)})`,
+  await mkdir(PROGRESS_DIR, { recursive: true });
+  await Promise.all(files.map((f) => unlink(join(PROGRESS_DIR, f))));
+
+  const progress = buildWeek1Progress(program);
+  const progressFileName = buildProgressFileName(new Date());
+  await writeFile(
+    join(PROGRESS_DIR, progressFileName),
+    `${JSON.stringify(progress, null, 2)}\n`,
   );
+  console.log(
+    `[temporal activity] wiped ${files.length} progress file(s); seeded week 1 → ${progressFileName}`,
+  );
+  return { progressFileName };
 }

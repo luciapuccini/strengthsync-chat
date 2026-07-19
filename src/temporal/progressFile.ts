@@ -1,19 +1,23 @@
-import { dirname, resolve } from "node:path";
+import { readdir } from "node:fs/promises";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { GeneratedProgram, ProgressWeek } from "./schemas.ts";
 
-// JSON files are the data store (discovery phase). The in-flight week lives in
-// src/app/dashboard/progress.json; completed weeks are archived next to it in
-// PROGRESS_DIR as progress_<datetimestamp>.json snapshots. Generated plans are
-// archived the same way in PROGRAM_DIR; program.json is the active template.
+// JSON files are the data store (discovery phase). Weekly progress lives only
+// under PROGRESS_DIR as progress_<datetimestamp>.json snapshots (newest =
+// in-flight week). End-of-plan wipe clears archives then seeds week 1.
+// Generated plans live in PROGRAM_DIR as program_<datetimestamp>.json — the
+// newest file is active.
 
 const appDir = resolve(dirname(fileURLToPath(import.meta.url)), "../app");
 const dashboardDir = resolve(appDir, "dashboard");
 
-export const PROGRESS_FILE = resolve(dashboardDir, "progress.json");
-export const PROGRAM_FILE = resolve(dashboardDir, "program.json");
 export const PROGRESS_DIR = resolve(dashboardDir, "progress");
 export const PROGRAM_DIR = resolve(dashboardDir, "program");
-export const CLIENT_PROFILE_FILE = resolve(appDir, "client_profile.json");
+export const CLIENT_PROFILE_FILE = resolve(
+  dashboardDir,
+  "client/client_profile.json",
+);
 export const TRAINING_RULES_FILE = resolve(appDir, "coach/training_rules.md");
 
 // <prefix>_<datetimestamp>.json — ISO UTC, filesystem-safe (no colons/dots):
@@ -31,6 +35,30 @@ export function buildProgramFileName(date: Date): string {
   return timestampedFileName("program", date);
 }
 
+async function resolveNewestTimestampedPath(
+  dir: string,
+  prefix: string,
+): Promise<string> {
+  const files = (await readdir(dir))
+    .filter((f) => f.startsWith(`${prefix}_`) && f.endsWith(".json"))
+    .sort()
+    .reverse();
+  if (files.length === 0) {
+    throw new Error(`No ${prefix}_*.json files found in ${dir}`);
+  }
+  return join(dir, files[0]!);
+}
+
+/** Newest program_<datetimestamp>.json under PROGRAM_DIR (active template). */
+export async function resolveCurrentProgramPath(): Promise<string> {
+  return resolveNewestTimestampedPath(PROGRAM_DIR, "program");
+}
+
+/** Newest progress_<datetimestamp>.json under PROGRESS_DIR (closest to today). */
+export async function resolveLatestProgressPath(): Promise<string> {
+  return resolveNewestTimestampedPath(PROGRESS_DIR, "progress");
+}
+
 // Week start for a freshly generated plan: the upcoming Monday (today if it
 // is Monday). UTC-based to stay timezone-stable on the worker.
 export function nextMonday(from: Date): Date {
@@ -46,4 +74,31 @@ export function addDays(date: Date, days: number): Date {
   const d = new Date(date);
   d.setUTCDate(d.getUTCDate() + days);
   return d;
+}
+
+export function toIsoDate(date: Date): string {
+  return date.toISOString().slice(0, 10);
+}
+
+/** Week-1 in-flight progress from a newly activated program template. */
+export function buildWeek1Progress(
+  program: GeneratedProgram,
+  from: Date = new Date(),
+): ProgressWeek {
+  const start = nextMonday(from);
+  const end = addDays(start, 6);
+  return {
+    current_week: 1,
+    total_weeks: program.total_weeks,
+    training_days_per_week: program.training_days_per_week,
+    rest_days_per_week: program.rest_days_per_week,
+    start_date: toIsoDate(start),
+    end_date: toIsoDate(end),
+    finished: false,
+    program: program.program.map((day, i) => ({
+      ...day,
+      date: toIsoDate(addDays(start, i)),
+      completed: false,
+    })),
+  };
 }
