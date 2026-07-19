@@ -19,7 +19,12 @@
           "reps": 10,
           "rest_time": 90,
           "weight_kg": 28,
-          "performed_reps": [10, 10, 9, 6]
+          "performed_reps": [
+            10,
+            10,
+            9,
+            6
+          ]
         },
         {
           "name": "JALÓN AL PECHO",
@@ -27,7 +32,12 @@
           "reps": 12,
           "rest_time": 90,
           "weight_kg": 30,
-          "performed_reps": [12, 12, 12, 12]
+          "performed_reps": [
+            12,
+            12,
+            12,
+            12
+          ]
         },
         {
           "name": "REMO GIRONDA",
@@ -35,14 +45,22 @@
           "reps": 12,
           "rest_time": 90,
           "weight_kg": 25,
-          "performed_reps": [12, 12, 12]
+          "performed_reps": [
+            12,
+            12,
+            12
+          ]
         },
         {
           "name": "PRES HOMBRO BARRA BAJA",
           "series": 3,
           "reps": 10,
           "rest_time": 90,
-          "performed_reps": [8, 8, 8]
+          "performed_reps": [
+            8,
+            8,
+            8
+          ]
         },
         {
           "name": "CURL DE BICEPS",
@@ -50,7 +68,11 @@
           "reps": 12,
           "rest_time": 90,
           "weight_kg": 6,
-          "performed_reps": [10, 10, 10]
+          "performed_reps": [
+            10,
+            10,
+            10
+          ]
         },
         {
           "name": "EXTENSIÓN TRICEPS POLEA",
@@ -58,14 +80,22 @@
           "reps": 12,
           "rest_time": 90,
           "weight_kg": 7.5,
-          "performed_reps": [12, 12, 12]
+          "performed_reps": [
+            12,
+            12,
+            12
+          ]
         },
         {
           "name": "FLEXIONES",
           "series": 3,
           "reps": 8,
           "rest_time": 90,
-          "performed_reps": [8, 8, 7]
+          "performed_reps": [
+            8,
+            8,
+            7
+          ]
         }
       ]
     },
@@ -82,7 +112,11 @@
           "reps": 10,
           "rest_time": 90,
           "weight_kg": 30,
-          "performed_reps": [10, 10, 10]
+          "performed_reps": [
+            10,
+            10,
+            10
+          ]
         },
         {
           "name": "PESO MUERTO",
@@ -90,7 +124,12 @@
           "reps": 10,
           "rest_time": 90,
           "weight_kg": 45,
-          "performed_reps": [10, 10, 10, 10]
+          "performed_reps": [
+            10,
+            10,
+            10,
+            10
+          ]
         },
         {
           "name": "ZANCADAS",
@@ -98,7 +137,12 @@
           "reps": 15,
           "rest_time": 90,
           "weight_kg": 20,
-          "performed_reps": [10, 10, 10, 10]
+          "performed_reps": [
+            10,
+            10,
+            10,
+            10
+          ]
         },
         {
           "name": "HIPEREXTENSIÓN",
@@ -106,7 +150,11 @@
           "reps": 12,
           "rest_time": 90,
           "weight_kg": 10,
-          "performed_reps": [13, 14, 14]
+          "performed_reps": [
+            13,
+            14,
+            14
+          ]
         },
         {
           "name": "EXTENSIÓN CUÁDRICEPS",
@@ -114,7 +162,11 @@
           "reps": 12,
           "rest_time": 90,
           "weight_kg": 30,
-          "performed_reps": [12, 12, 12],
+          "performed_reps": [
+            12,
+            12,
+            12
+          ],
           "notes": "bien"
         },
         {
@@ -123,7 +175,11 @@
           "reps": 12,
           "rest_time": 90,
           "weight_kg": 30,
-          "performed_reps": [12, 12, 12],
+          "performed_reps": [
+            12,
+            12,
+            12
+          ],
           "notes": "duro"
         }
       ]
@@ -147,7 +203,12 @@
           "series": 4,
           "reps": 6,
           "rest_time": 90,
-          "performed_reps": [5, 6, 5, 5],
+          "performed_reps": [
+            5,
+            6,
+            5,
+            5
+          ],
           "notes": "completadas con negativas el resto de las repeticiones"
         },
         {
@@ -156,7 +217,12 @@
           "reps": 10,
           "rest_time": 90,
           "weight_kg": 25,
-          "performed_reps": [11, 12, 12, 12]
+          "performed_reps": [
+            11,
+            12,
+            12,
+            12
+          ]
         },
         {
           "name": "ELEVACIÓN LATERAL",
@@ -164,7 +230,11 @@
           "reps": 8,
           "rest_time": 90,
           "weight_kg": 5,
-          "performed_reps": [8, 7, 7]
+          "performed_reps": [
+            8,
+            7,
+            7
+          ]
         },
         {
           "name": "DOMINADAS BARRA BAJA",
@@ -172,7 +242,11 @@
           "reps": 8,
           "rest_time": 90,
           "notes": "cuesta",
-          "performed_reps": [8, 8, 8]
+          "performed_reps": [
+            8,
+            8,
+            8
+          ]
         },
         {
           "name": "EXTENSIÓN TRICEPS TRAS NUCA",
@@ -180,7 +254,11 @@
           "reps": 12,
           "rest_time": 90,
           "weight_kg": 7.5,
-          "performed_reps": [12, 12, 12]
+          "performed_reps": [
+            12,
+            12,
+            12
+          ]
         },
         {
           "name": "FACE PULL",
@@ -188,7 +266,11 @@
           "reps": 12,
           "rest_time": 90,
           "weight_kg": 7.5,
-          "performed_reps": [12, 12, 12]
+          "performed_reps": [
+            12,
+            12,
+            12
+          ]
         }
       ]
     },
@@ -212,7 +294,12 @@
           "reps": 10,
           "rest_time": 90,
           "weight_kg": 45,
-          "performed_reps": [12, 12, 12, 12],
+          "performed_reps": [
+            12,
+            12,
+            12,
+            12
+          ],
           "notes": "muy bien"
         },
         {
@@ -221,7 +308,11 @@
           "reps": 8,
           "rest_time": 90,
           "weight_kg": 50,
-          "performed_reps": [10, 10, 10]
+          "performed_reps": [
+            10,
+            10,
+            10
+          ]
         },
         {
           "name": "HIP THRUST",
@@ -229,7 +320,12 @@
           "reps": 12,
           "rest_time": 90,
           "weight_kg": 20,
-          "performed_reps": [12, 12, 14, 14],
+          "performed_reps": [
+            12,
+            12,
+            14,
+            14
+          ],
           "notes": "maquina distinta, menos peso esperable. muy facil"
         },
         {
@@ -238,7 +334,11 @@
           "reps": 10,
           "rest_time": 90,
           "weight_kg": 10,
-          "performed_reps": [12, 12, 12]
+          "performed_reps": [
+            12,
+            12,
+            12
+          ]
         },
         {
           "name": "LEG CURL",
@@ -246,7 +346,11 @@
           "reps": 12,
           "rest_time": 90,
           "weight_kg": 30,
-          "performed_reps": [12, 12, 12],
+          "performed_reps": [
+            12,
+            12,
+            12
+          ],
           "notes": "muy bien"
         },
         {
@@ -255,7 +359,11 @@
           "reps": 12,
           "rest_time": 90,
           "weight_kg": 25,
-          "performed_reps": [14, 14, 14],
+          "performed_reps": [
+            14,
+            14,
+            14
+          ],
           "notes": "muy bien. maquina distinta, menos peso esperable."
         }
       ]
