@@ -37,8 +37,11 @@ app.get("/api/progress/history", async (c) => {
   }
 });
 
+// NOTE: LEGACY
 app.post("/api/workflows/sample", async (c) => {
-  const body = await c.req.json<{ name?: string }>().catch(() => ({}) as { name?: string });
+  const body = await c.req
+    .json<{ name?: string }>()
+    .catch(() => ({}) as { name?: string });
   const name = body.name ?? "StrengthSync";
 
   try {
@@ -107,10 +110,13 @@ app.post("/api/workflows/plan-generation", async (c) => {
 });
 
 app.post("/api/progress/day", async (c) => {
-  const body = await c.req.json<{ dayId?: number; day?: unknown }>().catch(() => ({}) as {
-    dayId?: number;
-    day?: unknown;
-  });
+  const body = await c.req.json<{ dayId?: number; day?: unknown }>().catch(
+    () =>
+      ({}) as {
+        dayId?: number;
+        day?: unknown;
+      },
+  );
 
   try {
     const daySchema = progressWeekSchema.shape.program.element;
