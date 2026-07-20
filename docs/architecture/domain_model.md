@@ -200,6 +200,6 @@ It deliberately postpones cross-client analytics such as “all bench-press sets
 ## Explicitly out of this file
 
 - Organization / membership / SaaS roles
-- `JobRun` / `LlmCall`
+- `JobRun` / `LlmCall` product database tables — workflow LLM traces are forwarded to the observability/evaluation provider, not stored here
 - Chat session storage
 - Full exercise catalog

@@ -114,3 +114,4 @@ These are facts about the current setup that matter when deploying independently
 - **Temporal cannot run on Workers** — the Temporal SDK needs Node; the Hono API and Temporal worker stay as separate Node processes today.
 - **Chat and workflows are already isolated** at the network level (no shared DO/API calls), but both depend on the same dashboard JSON domain.
 - **Shared agent core** (`src/agent/`) is intentionally runtime-agnostic: Worker supplies `env.OPENAI_API_KEY`; Temporal activities supply `process.env`.
+- **Current eval coverage is manual only:** `evals/chat.eval.ts` runs a Braintrust chat evaluation, but individual Temporal workflow LLM calls are not yet traced. The production target requires every workflow call to forward a trace through `LlmCallRecorder` to the external observability/evaluation provider; see [monorepo_structure.md](./monorepo_structure.md).

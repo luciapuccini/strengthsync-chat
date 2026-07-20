@@ -122,10 +122,11 @@ Do these in order. Each phase should leave the app runnable (local or hybrid).
 ### Phase 2 — Point Node writers at the Data API
 
 - Replace `fs` usage in `src/temporal/progressFile.ts` / activities / analysis tools with a small HTTP client (`DATA_API_URL` + `DATA_API_SECRET`).
+- Add the provider-backed `LlmCallRecorder` to the shared agent core and inject it from Temporal activities. Every workflow LLM call, including failures, must be forwarded to the observability/evaluation provider; do not persist call traces in the DataStore DO.
 - Keep Hono progress routes as thin proxies to the Data API **or** delete them and have the UI call the Worker directly (prefer delete once UI is ready).
 - Locally: Vite CF plugin Worker provides `/api/data`; Temporal processes call `http://localhost:5173` (or the Worker dev URL).
 
-**Exit:** Temporal + Hono no longer touch the filesystem for dashboard JSON.
+**Exit:** Temporal + Hono no longer touch the filesystem for dashboard JSON, and all workflow LLM calls are observable/evaluable outside the product data store.
 
 ### Phase 3 — UI reads/writes via Data API
 
